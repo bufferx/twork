@@ -44,10 +44,9 @@ class HelloHandler(BaseHandler):
             HttpUtil.validate_ip(self.request)
 
             # 只检查参数,不作业务逻辑处理
-            self.name = self._check_argument('name', None, str)
-            if not self.name: return
+            self.name = self._check_argument('name', expect_types=(str, unicode))
 
-            self.api_response({'e_code': ECODE.SUCCESS, 'e_msg': 'Hello, %s!' %
+            self.api_response({'e_code': ECODE.SUCCESS, 'e_msg': u'Hello, %s!' %
                     self.name})
 
         except HTTPError, e:

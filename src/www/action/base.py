@@ -33,8 +33,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     HTTP_SERVER_NAME = 'ZWS/1.0'
 
-    PARAMETER_VALUE_DEFAULT = 'NULL' 
-
     def initialize(self, _db):
         if __debug__:
             g_logger.debug('call initialize()')
@@ -48,13 +46,11 @@ class BaseHandler(tornado.web.RequestHandler):
 
     @util_decorator.time_it
     def _check_argument(self, parameter_name,
-            default_value=PARAMETER_VALUE_DEFAULT, expect_type=None):
+            default_value=None, expect_types=()):
         v = self.get_argument(parameter_name, default_value)
         if v is None:
             raise ParameterEmptyError(parameter_name)
-        if expect_type is not None: 
-            try:
-                v = expect_type(v)
-            except ValueError, e:
-                raise ParameterTypeError(parameter_name)
+
+        if expect_types and not isinstance(v, expect_types): 
+            raise ParameterTypeError(parameter_name)
         return v
