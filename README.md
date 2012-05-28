@@ -5,12 +5,12 @@ TornadoWebserverDemo is a demo for tornado framework usage.
 
 Usage
 ------------
-cd ./src/www/
-python service.py -env=debug
+* cd ./src/www/
+* python service.py -env=debug
 
 Test
 ------------
-http://localhost:8000/sayhi?name=bufferx
+* http://localhost:8000/sayhi?name=bufferx
 
 Requirements
 ------------
