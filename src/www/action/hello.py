@@ -50,12 +50,12 @@ class HelloHandler(BaseHandler):
                     self.name})
 
         except HTTPError, e:
-            g_logger.error(e)
+            g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
         except BaseError, e:
-            g_logger.error(e)
+            g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
         except Exception, e:
-            g_logger.error(e)
+            g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.DEFAULT, 'e_msg':
                 'Unknown'})

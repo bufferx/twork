@@ -40,9 +40,9 @@ global g_scheduler
 def update_global_data():
     current_hour = int(time.strftime('%H', time.localtime(time.time())))
     if current_hour == options.scheduler_wakeup_hour: 
-        g_logger.info('Schedulre: update_global_data')
+        g_logger.info('Scheduler: update_global_data')
     else:
-        g_logger.info('Schedulre: No Operation')
+        g_logger.info('Scheduler: No Operation')
     pass
 
 class TApplication(tornado.web.Application):
