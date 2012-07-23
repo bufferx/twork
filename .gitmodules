@@ -1,3 +1,3 @@
-[submodule "py_util"]
-	path = py_util
-	url = git@bitbucket.org:bufferx/py_util.git
+[submodule "pyutil"]
+	path = pyutil
+	url = git://github.com/bufferx/pyutil.git

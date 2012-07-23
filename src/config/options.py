@@ -23,8 +23,8 @@ import os
 
 import assembly
 
-import py_util.lib.tornado as tornado
-from py_util.lib.tornado.options import define, options
+import pyutil.lib.tornado as tornado
+from pyutil.lib.tornado.options import define, options
 
 DEFAULT_OPTIONS_PORT              = 8000 
 DEFAULT_OPTIONS_LOG_ROOT_PATH     = \

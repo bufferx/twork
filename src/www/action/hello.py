@@ -27,6 +27,7 @@ from tornado.web import HTTPError
 
 from util import g_logger
 from util import HttpUtil
+from util import decorator as util_decorator
 
 from base import BaseHandler 
 from domain.object.error import ErrorCode as ECODE
@@ -39,10 +40,11 @@ class HelloHandler(BaseHandler):
         self.get()
 
     @tornado.web.asynchronous
+    @util_decorator.validate_ip(_logger=g_logger)
+    @util_decorator.time_it(g_logger)
     def get(self):
         try:
-            HttpUtil.validate_ip(self.request)
-
+            #HttpUtil.validate_ip(self.request)
             # 只检查参数,不作业务逻辑处理
             self.name = self._check_argument('name', expect_types=(str, unicode))
 

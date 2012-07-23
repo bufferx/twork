@@ -18,11 +18,11 @@
 import os
 import sys
 
-import py_util.decorator as decorator
-from py_util.common import CommonUtil 
-from py_util.log import g_logger
-from py_util.http import HttpUtil 
-from py_util.lib.tornado.options import options
+import pyutil.decorator as decorator
+from pyutil.common import CommonUtil 
+from pyutil.log import g_logger
+from pyutil.http import HttpUtil 
+from pyutil.lib.tornado.options import options
 
 def main():
     ''' main function
