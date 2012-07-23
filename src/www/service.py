@@ -82,6 +82,9 @@ def main():
 
     g_logger.info('START TORNADO WEB SERVER ...')
 
+    for key, option in options.iteritems():
+        g_logger.info('Options: (%s, %s)', key, option.value())
+
     try:
         global g_scheduler
 
