@@ -1,7 +1,7 @@
-tornado_webserver_demo
+twork
 ==========
 
-TornadoWebserverDemo is a demo for tornado framework usage. 
+twork is a web server framework based on tornado.
 
 Usage
 ------------
@@ -21,4 +21,4 @@ The following libraries are required
 Issues
 ------
 
-Please report any issues via [github issues](https://github.com/bufferx/tornado_webserver_demo/issues)
+Please report any issues via [github issues](https://github.com/bufferx/twork/issues)
