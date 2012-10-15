@@ -86,6 +86,9 @@ def main():
         g_logger.info('Options: (%s, %s)', key, option.value())
 
     try:
+        sockets = tornado.netutil.bind_sockets(8888)
+        tornado.process.fork_processes(0)
+
         global g_scheduler
 
         g_scheduler = \
@@ -95,7 +98,9 @@ def main():
 
         http_server =  \
             tornado.httpserver.HTTPServer(request_callback=TApplication())
-        http_server.listen(options.port)
+        #http_server.listen(options.port)
+
+        http_server.add_sockets(sockets)
 
         tornado.ioloop.IOLoop.instance().start()
 
