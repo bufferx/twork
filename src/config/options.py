@@ -38,7 +38,7 @@ def define_options():
     define('log_root_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH, 
             help = 'Log file stored root path')
 
-    define("app_name", default = 'TORNADO_FRAMEWORK_DEMO_SERVICE', 
+    define("app_name", default = 'TWORK', 
             help = "Set Log Level")
 
     define("port", default = DEFAULT_OPTIONS_PORT, 

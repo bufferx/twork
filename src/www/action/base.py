@@ -36,7 +36,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def initialize(self, _db):
         if __debug__:
             g_logger.debug('call initialize()')
-        self.db = _db
+        self._db = _db
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
         g_logger.info(HttpUtil.get_header_string(self.request))
         pass
