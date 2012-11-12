@@ -34,6 +34,11 @@ from domain.object.error import ErrorCode as ECODE
 from domain.object.error import BaseError
 
 class HelloHandler(BaseHandler):
+    @property
+    def db(self):
+        if __debug__:
+            g_logger.debug('call property::db')
+        return self.application.db
 
     @tornado.web.asynchronous
     def post(self):
@@ -50,6 +55,10 @@ class HelloHandler(BaseHandler):
 
             self.api_response({'e_code': ECODE.SUCCESS, 'e_msg': u'Hello, %s!' %
                     self.name})
+
+            if __debug__:
+                g_logger.debug(self.db)
+                g_logger.debug(self._db)
 
         except HTTPError, e:
             g_logger.error(e, exc_info=True)

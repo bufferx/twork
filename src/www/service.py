@@ -32,10 +32,12 @@ import assembly
 import config.options
 from util import options
 from util import g_logger
+from domain.object.db import DB
 
 import action
 
 global g_scheduler
+g_scheduler = None
 
 def update_global_data():
     current_hour = int(time.strftime('%H', time.localtime(time.time())))
@@ -47,6 +49,15 @@ def update_global_data():
 
 class TApplication(tornado.web.Application):
 
+    @property
+    def db(self):
+        if not hasattr(self, '_db'):
+            self._db = DB()
+            if __debug__:
+                g_logger.debug('initial application.db: %s', self._db)
+            pass
+        return self._db
+
     def __init__(self):
         debug = options.env == "debug"
         app_settings = { 
@@ -57,16 +68,20 @@ class TApplication(tornado.web.Application):
 
         handlers = [
             # say hi 
-            (r'/sayhi', action.HelloHandler, dict(_db=None)),
+            (r'/sayhi', action.HelloHandler, dict(_db=self.db)),
         ]
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
 
 def handle_signal_kill(sig, frame):
     global g_scheduler
+
     g_logger.warning( 'Catch SIG: %d' % sig )
+
+    if g_scheduler is not None:
+        g_scheduler.stop()
+
     tornado.ioloop.IOLoop.instance().stop()
-    g_scheduler.stop()
 
 def main():
     ''' main function
