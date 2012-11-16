@@ -101,6 +101,8 @@ def main():
         g_logger.info('Options: (%s, %s)', key, option.value())
 
     try:
+        tornado.httpclient.AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
+
         sockets = tornado.netutil.bind_sockets(options.port)
         tornado.process.fork_processes(0)
 
