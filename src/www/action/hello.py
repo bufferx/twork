@@ -16,7 +16,15 @@
 # under the License.
 
 '''
-/hello, HelloWorld :) 
+localtion
+----------
+* /hello
+
+feature
+----------
+* Process-level global variable
+* Asynchronous HTTP request
+* Decorator demo
 '''
 
 import os
@@ -24,6 +32,7 @@ import time
 
 import tornado.web
 from tornado.web import HTTPError
+from tornado.httpclient import AsyncHTTPClient
 
 from util import g_logger
 from util import HttpUtil
@@ -60,6 +69,7 @@ class HelloHandler(BaseHandler):
                 g_logger.debug(self.db)
                 g_logger.debug(self._db)
 
+            self.async_fetch()
         except HTTPError, e:
             g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
@@ -70,3 +80,18 @@ class HelloHandler(BaseHandler):
             g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.DEFAULT, 'e_msg':
                 'Unknown'})
+
+    def async_fetch(self):
+        request = tornado.httpclient.HTTPRequest(url='http://www.example.com',
+                                                 method='GET',
+                                                 connect_timeout=1,
+                                                 request_timeout=5,
+                                                 user_agent='TWORK-SPIDER',
+                                                 )
+        http_client = AsyncHTTPClient()
+        http_client.fetch(request, self.__handle_async_request)
+
+    def __handle_async_request(self, response):
+        g_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
+        g_logger.debug('RESPONSE_ERROR\t%s' % response.error)
+        g_logger.debug('RESPONSE\t%s' % response)
