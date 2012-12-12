@@ -69,6 +69,7 @@ class TApplication(tornado.web.Application):
         handlers = [
             # say hi 
             (r'/sayhi', action.HelloHandler, dict(_db=self.db)),
+            (r'/asyncread', action.AsyncReadHandler, dict(_db=self.db)),
         ]
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
@@ -104,6 +105,7 @@ def main():
         if sys.version_info[:3] >= (2, 5, 2):
             #pycurl minimum supported version is 7.18.2
             tornado.httpclient.AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
+            pass
 
         sockets = tornado.netutil.bind_sockets(options.port)
         tornado.process.fork_processes(0)

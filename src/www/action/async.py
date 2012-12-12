@@ -18,12 +18,12 @@
 '''
 localtion
 ----------
-* /hello
+* /asyncread
 
 feature
 ----------
 * Process-level global variable
-* Asynchronous Http Request 
+* Asynchronous Read 
 * Decorator Demo
 '''
 
@@ -33,6 +33,7 @@ import time
 import tornado.web
 from tornado.web import HTTPError
 from tornado.httpclient import AsyncHTTPClient
+from tornado import gen
 
 from util import g_logger
 from util import HttpUtil
@@ -42,7 +43,7 @@ from base import BaseHandler
 from domain.object.error import ErrorCode as ECODE
 from domain.object.error import BaseError
 
-class HelloHandler(BaseHandler):
+class AsyncReadHandler(BaseHandler):
     @property
     def db(self):
         if __debug__:
@@ -53,45 +54,49 @@ class HelloHandler(BaseHandler):
     def post(self):
         self.get()
 
-    @util_decorator.time_it(g_logger)
     @util_decorator.validate_ip(_logger=g_logger)
     @tornado.web.asynchronous
+    @gen.engine
     def get(self):
+        self.name = self._check_argument('name', expect_types=(str, unicode))
+
+        urlist = ['http://www.example.com', 'http://www.google.com']
+
         try:
-            #HttpUtil.validate_ip(self.request)
-            # 只检查参数,不作业务逻辑处理
-            self.name = self._check_argument('name', expect_types=(str, unicode))
+            for url in urlist:
+                request = tornado.httpclient.HTTPRequest(url,
+                                                         method='GET',
+                                                         connect_timeout=1,
+                                                         request_timeout=5,
+                                                         user_agent='TWORK-SPIDER',
+                                                         )
+                http_client = AsyncHTTPClient()
 
-            self.api_response({'e_code': ECODE.SUCCESS, 'e_msg': u'Hello, %s!' %
-                    self.name})
-
-            if __debug__:
-                g_logger.debug(self.db)
-                g_logger.debug(self._db)
-
-            self.async_fetch()
+                response = yield gen.Task(http_client.fetch, request)
+                result = self.__handle_async_request(response)
+                self.finish(result)
+                break
+            else:
+                self.finish({'e_code':ECODE.HTTP, 'e_msg': 'SUCCESS'})
+            pass
         except HTTPError, e:
             g_logger.error(e, exc_info=True)
-            return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
+            self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
+            raise StopIteration
         except BaseError, e:
             g_logger.error(e, exc_info=True)
-            return self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
+            self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
+            raise StopIteration
         except Exception, e:
             g_logger.error(e, exc_info=True)
-            return self.api_response({'e_code':ECODE.DEFAULT, 'e_msg':
-                'Unknown'})
-
-    def async_fetch(self):
-        request = tornado.httpclient.HTTPRequest(url='http://www.example.com',
-                                                 method='GET',
-                                                 connect_timeout=1,
-                                                 request_timeout=5,
-                                                 user_agent='TWORK-SPIDER',
-                                                 )
-        http_client = AsyncHTTPClient()
-        http_client.fetch(request, self.__handle_async_request)
+            self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
+            raise StopIteration
 
     def __handle_async_request(self, response):
-        g_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
+        if response is None:
+            return None
+        #g_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
         g_logger.debug('RESPONSE_ERROR\t%s' % response.error)
         g_logger.debug('RESPONSE\t%s' % response)
+
+        return response.body
