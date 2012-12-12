@@ -37,16 +37,26 @@ class BaseHandler(tornado.web.RequestHandler):
         if __debug__:
             g_logger.debug('call initialize()')
         self._db = _db
-        self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
+        print id(self)
+        #self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
         g_logger.info(HttpUtil.get_header_string(self.request))
+        pass
+
+    def set_default_headers(self):
+        self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
         pass
 
     def on_finish(self):
         '''Require: tornado.version > 2.1.1
         '''
+        print id(self)
         request_time = 1000.0 * self.request.request_time()
         g_logger.info("%d %s %.2fms", self.get_status(),
                    self._request_summary(), request_time)
+
+    def on_connection_close(self):
+        g_logger.info('connection close.')
+        pass
 
     def api_response(self, data):
         self.finish(data)
