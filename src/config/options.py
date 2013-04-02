@@ -41,6 +41,9 @@ def define_options():
     define("app_name", default = 'TWORK', 
             help = "Set Log Level")
 
+    define("bind_ip", default = '0.0.0.0',
+            help = "Run server on a specific IP")
+
     define("port", default = DEFAULT_OPTIONS_PORT, 
             help = "Run server on a specific port", type = int)
 

@@ -54,11 +54,9 @@ class HelloHandler(BaseHandler):
         self.get()
 
     @util_decorator.time_it(g_logger)
-    @util_decorator.validate_ip(_logger=g_logger)
     @tornado.web.asynchronous
     def get(self):
         try:
-            #HttpUtil.validate_ip(self.request)
             # 只检查参数,不作业务逻辑处理
             self.name = self._check_argument('name', expect_types=(str, unicode))
 
@@ -70,6 +68,7 @@ class HelloHandler(BaseHandler):
                 g_logger.debug(self._db)
 
             self.async_fetch()
+
         except HTTPError, e:
             g_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
@@ -82,7 +81,7 @@ class HelloHandler(BaseHandler):
                 'Unknown'})
 
     def async_fetch(self):
-        request = tornado.httpclient.HTTPRequest(url='http://www.example.com',
+        request = tornado.httpclient.HTTPRequest(url='http://www.facebook.com',
                                                  method='GET',
                                                  connect_timeout=1,
                                                  request_timeout=5,
@@ -92,6 +91,7 @@ class HelloHandler(BaseHandler):
         http_client.fetch(request, self.__handle_async_request)
 
     def __handle_async_request(self, response):
-        g_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
-        g_logger.debug('RESPONSE_ERROR\t%s' % response.error)
-        g_logger.debug('RESPONSE\t%s' % response)
+        g_logger.debug('CURL_ERRNO\t%d', response.error.errno)
+        g_logger.debug('STACK_CONTEXT\tself.name=%s',  self.name)
+        g_logger.debug('RESPONSE_ERROR\t%s',  response.error)
+        g_logger.debug('RESPONSE\t%s',  response)
