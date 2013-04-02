@@ -107,8 +107,10 @@ def main():
             tornado.httpclient.AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
             pass
 
-        sockets = tornado.netutil.bind_sockets(options.port)
-        tornado.process.fork_processes(0)
+        sockets = tornado.netutil.bind_sockets(options.port,
+                address=options.bind_ip,
+                backlog=128)
+        #tornado.process.fork_processes(0)
 
         global g_scheduler
 
@@ -118,19 +120,21 @@ def main():
         g_scheduler.start()
 
         http_server =  \
-            tornado.httpserver.HTTPServer(request_callback=TApplication())
-        #http_server.listen(options.port)
+            tornado.httpserver.HTTPServer(xheaders=True, request_callback=TApplication())
         http_server.add_sockets(sockets)
 
         tornado.ioloop.IOLoop.instance().start()
 
+        http_server.stop()
+        tornado.ioloop.IOLoop.instance().close()
+
         g_logger.info('STOP TORNADO WEB SERVER ...')
-    except socket.error, e:
-        g_logger.warning('Socket Error: %s' % str(e))
-    except KeyboardInterrupt, e:
+    except socket.error as e:
+        g_logger.warning('Socket Error: %s', str(e))
+    except KeyboardInterrupt as e:
         g_logger.warning('Gently Quit')
-    except Exception, msg:
-        g_logger.error('UnCaught Exception: %s' % msg)
+    except Exception as e:
+        g_logger.error('UnCaught Exception: %s', e)
 
 if __name__ == '__main__':
     main()
