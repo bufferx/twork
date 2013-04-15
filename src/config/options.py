@@ -49,8 +49,8 @@ def define_options():
 
     define("env", default="dev", help="service run environment")
     
-    define("scheduler_interval", default = 30 * 1000, 
-            help = "Global Data Update Interval, TimeUnit: milliseconds", type = int)
+    define("scheduler_interval", default = 30,
+            help = "Global Data Update Interval, TimeUnit: seconds", type = int)
     
     define("scheduler_wakeup_hour", default = 0, 
             help = "Global Data Update Hour, Default: 0", type = int)

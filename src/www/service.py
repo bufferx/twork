@@ -116,7 +116,7 @@ def main():
 
         g_scheduler = \
             tornado.ioloop.PeriodicCallback(update_global_data,
-                    options.scheduler_interval)
+                    options.scheduler_interval * 1000)
         g_scheduler.start()
 
         http_server =  \
