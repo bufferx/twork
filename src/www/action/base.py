@@ -20,7 +20,7 @@
 
 import os
 
-import tornado.web
+from tornado.web import RequestHandler
 
 from util import g_logger
 from util import HttpUtil
@@ -29,7 +29,7 @@ from util import decorator as util_decorator
 from domain.object.error import ParameterEmptyError
 from domain.object.error import ParameterTypeError
 
-class BaseHandler(tornado.web.RequestHandler):
+class BaseHandler(RequestHandler):
 
     HTTP_SERVER_NAME = 'ZWS/1.0'
 
@@ -45,6 +45,10 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
         pass
 
+    def on_connection_close(self):
+        g_logger.info('connection close.')
+        pass
+
     def on_finish(self):
         '''Require: tornado.version > 2.1.1
         '''
@@ -52,12 +56,13 @@ class BaseHandler(tornado.web.RequestHandler):
         g_logger.info("%d %s %.2fms", self.get_status(),
                    self._request_summary(), request_time)
 
-    def on_connection_close(self):
-        g_logger.info('connection close.')
-        pass
+    def finish(self, chunk=None):
+        if not self.request.connection.stream.closed():
+            RequestHandler.finish(self, chunk)
 
     def api_response(self, data):
-        self.finish(data)
+        if not self._finished:
+            self.finish(data)
 
     @util_decorator.time_it(_logger=g_logger)
     def _check_argument(self, parameter_name,
