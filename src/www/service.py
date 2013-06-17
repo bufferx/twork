@@ -30,6 +30,7 @@ import tornado.httpserver
 import assembly
 
 import config.options
+
 from util import options
 from util import g_logger
 from domain.object.db import DB

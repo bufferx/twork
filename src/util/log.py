@@ -15,20 +15,40 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import os
-import sys
+'''日志
+'''
 
-import pyutil.decorator as decorator
-from pyutil.common import CommonUtil 
-from pyutil.http import HttpUtil 
+import os
+import sys 
+import logging
+import logging.handlers
+
 from pyutil.lib.tornado.options import options
 
-from log import g_logger
+# 设置消息格式
+msg_formatter = logging.Formatter('%(asctime)s - %(name)s - \
+%(levelname)s - %(module)s.%(funcName)s:%(lineno)d - %(process)d - %(thread)d - %(message)s', '') 
+
+# 创建处理器
+_log_path = '%s/%s.Main.log' % (options.log_path, options.app_name)
+_hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
+_hand.setLevel(logging.DEBUG)
+_hand.setFormatter(msg_formatter)
+
+# 创建记录器
+g_logger = logging.getLogger()
+
+try:
+    g_logger.setLevel(getattr(logging, options.log_level.upper()))
+except AttributeError as e:
+    g_logger.setLevel(logging.DEBUG)
+    pass
+
+g_logger.addHandler(_hand)
 
 def main():
     ''' main function
     '''
-    pass
 
 if __name__ == '__main__':
     main()
