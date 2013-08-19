@@ -18,8 +18,6 @@
 '''BaseRequestHandler 
 '''
 
-import os
-
 from tornado.web import RequestHandler
 
 from util import g_logger

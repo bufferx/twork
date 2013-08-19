@@ -15,9 +15,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import os
-import sys
-
 import pyutil.decorator as decorator
 from pyutil.common import CommonUtil 
 from pyutil.http import HttpUtil 

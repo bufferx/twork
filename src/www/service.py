@@ -18,7 +18,6 @@
 ''' tornado web server
 '''
 
-import os
 import sys
 import time
 import signal

@@ -18,8 +18,6 @@
 '''日志
 '''
 
-import os
-import sys 
 import logging
 import logging.handlers
 
