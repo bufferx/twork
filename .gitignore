@@ -6,4 +6,4 @@ tmp/
 log/
 build/
 dist/
-kpns.egg-info/
+*.egg-info/
