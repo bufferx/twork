@@ -53,7 +53,7 @@ class CommonTimer(object):
         self.__scheduler.start()
         pass
 
-    def stop():
+    def stop(self):
         if self.__scheduler is not None:
             self.__scheduler.stop()
         pass

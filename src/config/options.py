@@ -41,6 +41,9 @@ def define_options():
     define("app_name", default = 'TWORK', 
             help = "Set Log Level")
 
+    define("v", default = False,
+            help = "verbose, print debug info", type = bool)
+
     define("bind_ip", default = '0.0.0.0',
             help = "Run server on a specific IP")
 
@@ -83,5 +86,3 @@ def init_options():
     options.log_root_path = _check_dir_tail(options.log_root_path)
     options.log_path = '%s/%d' % (options.log_root_path, options.port)
     _mkdir(options.log_path)
-
-init_options()

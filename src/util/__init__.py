@@ -20,7 +20,7 @@ from pyutil.common import CommonUtil
 from pyutil.http import HttpUtil 
 from pyutil.lib.tornado.options import options
 
-from log import g_logger
+from log import init_logger, g_logger
 
 def main():
     ''' main function

@@ -23,26 +23,39 @@ import logging.handlers
 
 from pyutil.lib.tornado.options import options
 
-# 设置消息格式
-msg_formatter = logging.Formatter('%(asctime)s - %(name)s - \
-%(levelname)s - %(module)s.%(funcName)s:%(lineno)d - %(process)d - %(thread)d - %(message)s', '') 
-
-# 创建处理器
-_log_path = '%s/%s.Main.log' % (options.log_path, options.app_name)
-_hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
-_hand.setLevel(logging.DEBUG)
-_hand.setFormatter(msg_formatter)
-
 # 创建记录器
 g_logger = logging.getLogger()
 
-try:
-    g_logger.setLevel(getattr(logging, options.log_level.upper()))
-except AttributeError as e:
-    g_logger.setLevel(logging.DEBUG)
-    pass
+def init_logger():
+    def __init_root_logger():
+        logger = logging.getLogger()
 
-g_logger.addHandler(_hand)
+        # 设置消息格式
+        if options.v:
+            msg_formatter = logging.Formatter('%(asctime)s - %(name)s - \
+    %(levelname)1.1s - %(module)s.%(funcName)s:%(lineno)d - %(process)d - \
+    %(thread)d - %(message)s',
+                    '%Y-%m-%d %H:%M:%S')
+        else:
+            msg_formatter = logging.Formatter('%(asctime)s - %(levelname)1.1s - \
+    %(module)s:%(lineno)d - %(message)s',
+                    '%Y-%m-%d %H:%M:%S')
+
+        # 创建处理器
+        _log_path = '%s/%s.Main.log' % (options.log_path, options.app_name.upper())
+        _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
+        _hand.setLevel(logging.DEBUG)
+        _hand.setFormatter(msg_formatter)
+
+        try:
+            logger.setLevel(getattr(logging, options.log_level.upper()))
+        except AttributeError as e:
+            logger.setLevel(logging.DEBUG)
+            pass
+
+        logger.addHandler(_hand)
+
+    __init_root_logger()
 
 def main():
     ''' main function

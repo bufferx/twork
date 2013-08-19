@@ -28,10 +28,10 @@ import tornado.httpserver
 
 import assembly
 
-import config.options
+from config.options import init_options
 
 from util import options
-from util import g_logger
+from util import init_logger, g_logger
 from domain.object.db import DB
 
 from www.web import TApplication
@@ -46,6 +46,8 @@ def handle_signal_kill(sig, frame):
 def main():
     ''' main function
     '''
+    init_options()
+    init_logger()
     # 忽略Broken Pipe信号
     signal.signal(signal.SIGPIPE, signal.SIG_IGN);
                         
