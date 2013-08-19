@@ -15,21 +15,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-''' tornado web application 
-'''
-
+import functools
+import time
 import tornado.web
-import tornado.httpserver
-
-import assembly
 
 from util import options
 from util import g_logger
-from domain.object.db import DB
 
-import action
-
-class TApplication(tornado.web.Application):
+class CommonTimer(object):
+    '''Common Timer'''
 
     @classmethod
     def instance(cls):
@@ -37,27 +31,30 @@ class TApplication(tornado.web.Application):
             cls._instance = cls()
         return cls._instance
 
-    @property
-    def db(self):
-        if not hasattr(self, '_db'):
-            self._db = DB()
-            if __debug__:
-                g_logger.debug('initial application.db: %s', self._db)
-            pass
-        return self._db
-
     def __init__(self):
-        debug = options.env == "debug"
-        app_settings = { 
-                'gzip': 'on',
-                'static_path': assembly.STATIC_PATH,
-                'debug':debug,
-                }
+        self.__scheduler = None
 
-        handlers = [
-            # say hi 
-            (r'/sayhi', action.HelloHandler, dict(_db=self.db)),
-            (r'/asyncread', action.AsyncReadHandler, dict(_db=self.db)),
-        ]
-        
-        tornado.web.Application.__init__(self, handlers, **app_settings)
+    def __callback(self, web_app):
+        g_logger.debug('WEB_APPLICATION: %d', id(web_app))
+    
+    def start(self, web_app):
+        assert options.timer_interval > 0
+
+        if self.__scheduler is not None:
+            return
+
+        __callback = functools.partial(self.__callback, web_app)
+
+        tornado.ioloop.IOLoop.instance().add_timeout(time.time(), __callback)
+
+        self.__scheduler = \
+            tornado.ioloop.PeriodicCallback(__callback,
+                    options.timer_interval * 1000)
+        self.__scheduler.start()
+        pass
+
+    def stop():
+        if self.__scheduler is not None:
+            self.__scheduler.stop()
+        pass
+    pass

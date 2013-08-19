@@ -15,7 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-''' tornado web server
+''' tornado server
 '''
 
 import sys
@@ -35,9 +35,7 @@ from util import g_logger
 from domain.object.db import DB
 
 from www.web import TApplication
-
-global g_scheduler
-g_scheduler = None
+from timer.common import CommonTimer
 
 def update_global_data():
     current_hour = int(time.strftime('%H', time.localtime(time.time())))
@@ -48,13 +46,9 @@ def update_global_data():
     pass
 
 def handle_signal_kill(sig, frame):
-    global g_scheduler
-
     g_logger.warning( 'Catch SIG: %d' % sig )
 
-    if g_scheduler is not None:
-        g_scheduler.stop()
-
+    CommonTimer.instance().stop()
     tornado.ioloop.IOLoop.instance().stop()
 
 def main():
@@ -88,15 +82,11 @@ def main():
             sockets_list.append(sockets)
         #tornado.process.fork_processes(0)
 
-        global g_scheduler
-
-        g_scheduler = \
-            tornado.ioloop.PeriodicCallback(update_global_data,
-                    options.scheduler_interval * 1000)
-        g_scheduler.start()
+        web_app     = TApplication()
+        CommonTimer.instance().start(web_app)
 
         http_server =  \
-            tornado.httpserver.HTTPServer(xheaders=True, request_callback=TApplication())
+            tornado.httpserver.HTTPServer(xheaders=True, request_callback=web_app)
         for sockets in sockets_list:
             http_server.add_sockets(sockets)
 
