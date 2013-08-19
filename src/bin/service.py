@@ -37,14 +37,6 @@ from domain.object.db import DB
 from www.web import TApplication
 from timer.common import CommonTimer
 
-def update_global_data():
-    current_hour = int(time.strftime('%H', time.localtime(time.time())))
-    if current_hour == options.scheduler_wakeup_hour: 
-        g_logger.info('Scheduler: update_global_data')
-    else:
-        g_logger.info('Scheduler: No Operation')
-    pass
-
 def handle_signal_kill(sig, frame):
     g_logger.warning( 'Catch SIG: %d' % sig )
 
@@ -80,13 +72,12 @@ def main():
                     address=bind_ip,
                     backlog=128)
             sockets_list.append(sockets)
-        #tornado.process.fork_processes(0)
 
-        web_app     = TApplication()
-        CommonTimer.instance().start(web_app)
+        CommonTimer.instance().start(TApplication.instance())
 
         http_server =  \
-            tornado.httpserver.HTTPServer(xheaders=True, request_callback=web_app)
+            tornado.httpserver.HTTPServer(xheaders=True,
+                    request_callback=TApplication.instance())
         for sockets in sockets_list:
             http_server.add_sockets(sockets)
 
