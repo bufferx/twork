@@ -24,7 +24,6 @@ import sys
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 SOURCE_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..'))
 PROJECT_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..', '..'))
-STATIC_PATH = os.path.realpath(os.path.join(SOURCE_PATH, 'wwwroot', 'static'))
 
 if SOURCE_PATH not in sys.path:
     sys.path.append(SOURCE_PATH)
@@ -32,14 +31,10 @@ if SOURCE_PATH not in sys.path:
 if PROJECT_PATH not in sys.path:
     sys.path.append(PROJECT_PATH)
 
-if STATIC_PATH not in sys.path:
-    sys.path.append(STATIC_PATH)
-
 def main():
     print 'CURRENT_PATH:', CURRENT_PATH
     print 'SOURCE_PATH:', SOURCE_PATH
     print 'PROJECT_PATH:', PROJECT_PATH
-    print 'STATIC_PATH:', STATIC_PATH
 
 if __name__ == '__main__':
     main()

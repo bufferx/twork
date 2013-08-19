@@ -19,12 +19,9 @@
 '''
 
 import sys
-import time
 import signal
 import socket
-
-import tornado.web
-import tornado.httpserver
+import tornado
 
 import assembly
 
@@ -48,6 +45,7 @@ def main():
     '''
     init_options()
     init_logger()
+
     # 忽略Broken Pipe信号
     signal.signal(signal.SIGPIPE, signal.SIG_IGN);
                         
