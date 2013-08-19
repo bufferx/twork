@@ -34,7 +34,7 @@ from util import options
 from util import g_logger
 from domain.object.db import DB
 
-import action
+from www.web import TApplication
 
 global g_scheduler
 g_scheduler = None
@@ -46,33 +46,6 @@ def update_global_data():
     else:
         g_logger.info('Scheduler: No Operation')
     pass
-
-class TApplication(tornado.web.Application):
-
-    @property
-    def db(self):
-        if not hasattr(self, '_db'):
-            self._db = DB()
-            if __debug__:
-                g_logger.debug('initial application.db: %s', self._db)
-            pass
-        return self._db
-
-    def __init__(self):
-        debug = options.env == "debug"
-        app_settings = { 
-                'gzip': 'on',
-                'static_path': assembly.STATIC_PATH,
-                'debug':debug,
-                }
-
-        handlers = [
-            # say hi 
-            (r'/sayhi', action.HelloHandler, dict(_db=self.db)),
-            (r'/asyncread', action.AsyncReadHandler, dict(_db=self.db)),
-        ]
-        
-        tornado.web.Application.__init__(self, handlers, **app_settings)
 
 def handle_signal_kill(sig, frame):
     global g_scheduler
