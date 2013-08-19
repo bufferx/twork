@@ -4,3 +4,6 @@
 tags
 tmp/
 log/
+build/
+dist/
+kpns.egg-info/
