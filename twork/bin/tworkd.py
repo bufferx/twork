@@ -55,7 +55,7 @@ def main():
     signal.signal(signal.SIGTERM, handle_signal_kill)
     signal.signal(signal.SIGHUP, handle_signal_kill)
 
-    g_logger.info('START TORNADO WEB SERVER ...')
+    g_logger.info('START TORNADO SERVER ...')
 
     for key, option in options.iteritems():
         g_logger.info('Options: (%s, %s)', key, option.value())
@@ -70,7 +70,7 @@ def main():
         for bind_ip in options.bind_ip.split(','):
             sockets = tornado.netutil.bind_sockets(options.port,
                     address=bind_ip,
-                    backlog=128)
+                    backlog=options.backlog)
             sockets_list.append(sockets)
 
         CommonTimer.instance().start(TApplication.instance())
@@ -86,7 +86,7 @@ def main():
         http_server.stop()
         tornado.ioloop.IOLoop.instance().close()
 
-        g_logger.info('STOP TORNADO WEB SERVER ...')
+        g_logger.info('STOP TORNADO SERVER ...')
     except socket.error as e:
         g_logger.warning('Socket Error: %s', e, exc_info=True)
     except KeyboardInterrupt as e:

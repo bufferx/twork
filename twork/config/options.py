@@ -50,6 +50,9 @@ def define_options():
     define("port", default = DEFAULT_OPTIONS_PORT, 
             help = "Run server on a specific port", type = int)
 
+    define("backlog", default = 128, 
+            help = "the same meaning as for socket.listen", type = int)
+
     define("env", default="dev", help="service run environment")
     
     define("timer_interval", default = 30,
