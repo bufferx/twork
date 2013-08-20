@@ -31,7 +31,7 @@ from util import options
 from util import init_logger, g_logger
 from domain.object.db import DB
 
-from www.web import HTTPServer
+from web.server import HTTPServer
 
 def handle_signal_kill(sig, frame):
     g_logger.warning( 'Catch SIG: %d' % sig )
