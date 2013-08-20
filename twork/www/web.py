@@ -23,9 +23,10 @@ import tornado.httpserver
 
 import assembly
 
+from domain.object.db import DB
 from util import options
 from util import g_logger
-from domain.object.db import DB
+from timer.common import CommonTimer
 
 import action
 
@@ -61,3 +62,33 @@ class TApplication(tornado.web.Application):
         ]
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
+
+class HTTPServer(object):
+
+    @classmethod
+    def instance(cls):
+        if not hasattr(cls, '_instance'):
+            cls._instance = cls()
+        return cls._instance
+
+    def start(self):
+        sockets_list = []
+        for bind_ip in options.bind_ip.split(','):
+            sockets = tornado.netutil.bind_sockets(options.port,
+                    address=bind_ip,
+                    backlog=options.backlog)
+            sockets_list.append(sockets)
+
+        CommonTimer.instance().start(TApplication.instance())
+
+        self.http_server =  \
+            tornado.httpserver.HTTPServer(xheaders=True,
+                    request_callback=TApplication.instance())
+        for sockets in sockets_list:
+            self.http_server.add_sockets(sockets)
+
+    def stop(self):
+        CommonTimer.instance().stop()
+
+        if hasattr(self, 'http_server'):
+            self.http_server.stop()

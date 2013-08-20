@@ -31,13 +31,11 @@ from util import options
 from util import init_logger, g_logger
 from domain.object.db import DB
 
-from www.web import TApplication
-from timer.common import CommonTimer
+from www.web import HTTPServer
 
 def handle_signal_kill(sig, frame):
     g_logger.warning( 'Catch SIG: %d' % sig )
 
-    CommonTimer.instance().stop()
     tornado.ioloop.IOLoop.instance().stop()
 
 def main():
@@ -66,25 +64,11 @@ def main():
             tornado.httpclient.AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
             pass
 
-        sockets_list = []
-        for bind_ip in options.bind_ip.split(','):
-            sockets = tornado.netutil.bind_sockets(options.port,
-                    address=bind_ip,
-                    backlog=options.backlog)
-            sockets_list.append(sockets)
-
-        CommonTimer.instance().start(TApplication.instance())
-
-        http_server =  \
-            tornado.httpserver.HTTPServer(xheaders=True,
-                    request_callback=TApplication.instance())
-        for sockets in sockets_list:
-            http_server.add_sockets(sockets)
-
+        HTTPServer.instance().start()
         tornado.ioloop.IOLoop.instance().start()
 
-        http_server.stop()
-        tornado.ioloop.IOLoop.instance().close()
+        HTTPServer.instance().stop()
+        tornado.ioloop.IOLoop.instance().close(all_fds=True)
 
         g_logger.info('STOP TORNADO SERVER ...')
     except socket.error as e:
