@@ -44,15 +44,6 @@ from domain.object.error import ErrorCode as ECODE
 from domain.object.error import BaseError
 
 class AsyncReadHandler(BaseHandler):
-    @property
-    def db(self):
-        if __debug__:
-            g_logger.debug('call property::db')
-        return self.application.db
-
-    @tornado.web.asynchronous
-    def post(self):
-        self.get()
 
     @util_decorator.validate_ip(_logger=g_logger)
     @tornado.web.asynchronous

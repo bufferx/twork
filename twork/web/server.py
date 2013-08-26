@@ -57,8 +57,7 @@ class TApplication(tornado.web.Application):
 
         handlers = [
             # say hi 
-            (r'/sayhi', action.HelloHandler, dict(_db=self.db)),
-            (r'/asyncread', action.AsyncReadHandler, dict(_db=self.db)),
+            (r'/sayhi', action.HelloHandler, {'version': (1, 0)}),
         ]
         
         tornado.web.Application.__init__(self, handlers, **app_settings)

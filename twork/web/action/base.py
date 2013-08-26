@@ -31,21 +31,16 @@ class BaseHandler(RequestHandler):
 
     HTTP_SERVER_NAME = 'ZWS/1.0'
 
-    def initialize(self, _db):
-        if __debug__:
-            g_logger.debug('call initialize()')
-        self._db = _db
+    def initialize(self, version):
+        self.version = version
         if __debug__:
             g_logger.debug(HttpUtil.get_header_string(self.request))
-        pass
 
     def set_default_headers(self):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
-        pass
 
     def on_connection_close(self):
         g_logger.info('connection close.')
-        pass
 
     def on_finish(self):
         '''Require: tornado.version > 2.1.1
