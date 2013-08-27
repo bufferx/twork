@@ -52,14 +52,19 @@ if major >= 3:
 distutils.core.setup(
     name="twork",
     version=version,
-    packages = setuptools.find_packages(exclude=["test", "*.log"]),
-    package_data = {
-        "twork": ["bin/*.py", "www/static/favicon.ico"],
-    },
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
     url="http://idupx.blogspot.com/",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     description="twork is a network server skeleton based on tornado",
+    packages = setuptools.find_packages(exclude=["test", "*.log"]),
+    package_data = {
+        "twork": ["bin/*.py", "www/static/favicon.ico"],
+    },
+    entry_points = {
+     'console_scripts': [
+         'tworkd = twork.bin.tworkd:main',
+         ],
+      },
     **kwargs
 )
