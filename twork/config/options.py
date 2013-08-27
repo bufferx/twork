@@ -58,6 +58,9 @@ def define_options():
     define("timer_interval", default = 30,
             help = "Timer Interval, TimeUnit: seconds", type = int)
     
+    define("config", default = '%s/etc/twork.conf' % assembly.SOURCE_PATH,
+            help = "Configuration file specifying options")
+
 def _usage():
     print 'Usage: ./service -log_root_path=SpecifiedFile -port=SpecifiedPort'
     sys.exit()
@@ -84,6 +87,7 @@ def init_options():
     define_options()
     # maybe some options will be use before load config file
     tornado.options.parse_command_line()
+    tornado.options.parse_config_file(options.config)
     if not options.log_root_path or not options.port:
         _usage()
     options.log_root_path = _check_dir_tail(options.log_root_path)
