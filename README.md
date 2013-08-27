@@ -1,7 +1,7 @@
 twork
 ==========
 
-twork is a network server skeleton based on tornado
+twork is a network server framework based on tornado
 
 Environment
 ------------

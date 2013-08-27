@@ -56,7 +56,7 @@ distutils.core.setup(
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
     license="http://www.apache.org/licenses/LICENSE-2.0",
-    description="twork is a network server skeleton based on tornado",
+    description="twork is a network server framework based on tornado",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
         "twork": ["www/static/favicon.ico"],
