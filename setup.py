@@ -54,12 +54,12 @@ distutils.core.setup(
     version=version,
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
-    url="http://idupx.blogspot.com/",
+    url="https://github.com/bufferx/twork",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     description="twork is a network server skeleton based on tornado",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
-        "twork": ["bin/*.py", "www/static/favicon.ico"],
+        "twork": ["www/static/favicon.ico"],
     },
     entry_points = {
      'console_scripts': [

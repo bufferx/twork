@@ -1,3 +1,0 @@
-[submodule "pyutil"]
-	path = pyutil
-	url = git://github.com/bufferx/pyutil.git
