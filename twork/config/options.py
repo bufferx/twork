@@ -87,7 +87,8 @@ def init_options():
     define_options()
     # maybe some options will be use before load config file
     tornado.options.parse_command_line()
-    tornado.options.parse_config_file(options.config)
+    if os.path.exists(options.config):
+        tornado.options.parse_config_file(options.config)
     if not options.log_root_path or not options.port:
         _usage()
     options.log_root_path = _check_dir_tail(options.log_root_path)
