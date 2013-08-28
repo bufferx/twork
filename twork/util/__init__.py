@@ -18,7 +18,7 @@
 import pyutil.decorator as decorator
 from pyutil.common import CommonUtil 
 from pyutil.http import HttpUtil 
-from pyutil.lib.tornado.options import options
+from pyutil.lib.tornado.options import define, options
 
 from log import init_logger, g_logger
 

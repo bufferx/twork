@@ -58,7 +58,7 @@ def define_options():
     define("timer_interval", default = 30,
             help = "Timer Interval, TimeUnit: seconds", type = int)
     
-    define("config", default = '%s/etc/twork.conf' % assembly.SOURCE_PATH,
+    define("config", default = '%s/etc/twork.conf' % assembly.PROJECT_PATH,
             help = "Configuration file specifying options")
 
 def _usage():
