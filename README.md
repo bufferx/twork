@@ -1,7 +1,7 @@
 twork
 ==========
 
-twork is a network server framework based on tornado
+twork is a neTwork server framework based on tornado
 
 Environment
 ------------
@@ -20,6 +20,7 @@ Usage & Debug
 * cd $TORNADO_PATH && python setup.py install
 * cd $PYUTIL_PATH && python setup.py install
 * python twork/bin/tworkd.py -bind_ip=localhost -port=8000
+* or tworkd -bind_ip=localhost -port=8000
 
 Deploy
 ------------
@@ -33,11 +34,16 @@ Supervisor
 ------------
 * [supervisord](http://supervisord.org/)
 * [conf-template](https://github.com/bufferx/supervisor_conf_tpl)
-* command: python -OO $VIRTUALENV/bin/tworkd -bind_ip=localhost -port=8000
+* command: python -OO $VIRTUALENV/bin/tworkd -config=$TWORK_CONFIG_PATH
 
 Case
 ------------
 * http://localhost:8000/sayhi?name=bufferx
+
+Fork
+------------
+* fork the specified project from twork and create the git repo
+* python script/forkme.py
 
 Issues
 ------
