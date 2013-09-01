@@ -38,7 +38,7 @@ Supervisor
 
 Case
 ------------
-* http://localhost:8000/sayhi?name=bufferx
+* http://localhost:8000/v1.0/twork/stat
 
 Fork
 ------------
