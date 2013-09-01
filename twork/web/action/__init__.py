@@ -17,7 +17,4 @@
 ''' handler list
 '''
 
-import os
-import sys
-
-from hello import HelloHandler
+from stat_info import StatInfoHandler

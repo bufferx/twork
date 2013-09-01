@@ -21,17 +21,20 @@
 import sys
 import signal
 import socket
+
 import tornado
+from tornado.httpclient import AsyncHTTPClient
 
 import assembly
 
 from config.options import init_options
+from domain.object.db import DB
 
 from util import options
 from util import init_logger, g_logger
-from domain.object.db import DB
 
 from web.server import HTTPServer
+
 
 def handle_signal_kill(sig, frame):
     g_logger.warning( 'Catch SIG: %d' % sig )
@@ -61,7 +64,7 @@ def main():
     try:
         if sys.version_info[:3] >= (2, 5, 2):
             #pycurl minimum supported version is 7.18.2
-            tornado.httpclient.AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
+            AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
             pass
 
         HTTPServer.instance().start()

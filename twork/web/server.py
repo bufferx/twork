@@ -18,17 +18,22 @@
 ''' tornado web application 
 '''
 
-import tornado.web
+import time
+
 import tornado.httpserver
+import tornado.web
+from tornado.ioloop import IOLoop
 
 import assembly
+
+import action
 
 from domain.object.db import DB
 from util import options
 from util import g_logger
+
 from timer.common import CommonTimer
 
-import action
 
 class TApplication(tornado.web.Application):
 
@@ -47,6 +52,12 @@ class TApplication(tornado.web.Application):
             pass
         return self._db
 
+    @property
+    def stat_info(self):
+        fd_all = len(IOLoop.instance()._handlers)
+        return {'fd': {'all': fd_all}, 'uptime': '%.3f' % (time.time() -
+            self._start_time)}
+
     def __init__(self):
         debug = options.env == "debug"
         app_settings = { 
@@ -56,9 +67,11 @@ class TApplication(tornado.web.Application):
                 }
 
         handlers = [
-            # say hi 
-            (r'/sayhi', action.HelloHandler, {'version': (1, 0)}),
+            (r'^/v1.0/twork/stat$', action.StatInfoHandler,
+                {'version': (1, 0)}),
         ]
+
+        self._start_time = time.time()
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
 

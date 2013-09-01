@@ -35,6 +35,13 @@ class ErrorCode(object):
 
 class ErrorMessage(object):
     SUCCESS = 'SUCCESS'
+    DEFAULT = 'ERROR'
+    NO_DATA = 'NO_DATA'
+    DB = 'ERROR_DB'
+    DB_INTERFACE = 'ERROR_DB_INTERFACE'
+    DB_TOOMANYCONNECTIONS = 'ERROR_DB_TOOMANYCONNECTIONS'
+    DB_DATABASEERROR = 'DB_DATABASEERROR'
+    PARAMS = 'ERROR_PARAMS'
     pass
 
 class BaseError(Exception):
