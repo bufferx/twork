@@ -28,7 +28,6 @@ import assembly
 
 import action
 
-from domain.object.db import DB
 from util import options
 from util import g_logger
 
@@ -42,15 +41,6 @@ class TApplication(tornado.web.Application):
         if not hasattr(cls, '_instance'):
             cls._instance = cls()
         return cls._instance
-
-    @property
-    def db(self):
-        if not hasattr(self, '_db'):
-            self._db = DB()
-            if __debug__:
-                g_logger.debug('initial application.db: %s', self._db)
-            pass
-        return self._db
 
     @property
     def stat_info(self):
