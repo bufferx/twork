@@ -55,9 +55,6 @@ def define_options():
 
     define("env", default="dev", help="service run environment")
     
-    define("timer_interval", default = 30,
-            help = "Timer Interval, TimeUnit: seconds", type = int)
-    
     define("config", default = '%s/etc/twork.conf' % assembly.PROJECT_PATH,
             help = "Configuration file specifying options")
 

@@ -65,6 +65,11 @@ class TApplication(tornado.web.Application):
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
 
+        self.timer_callback()
+
+    def timer_callback(self):
+        g_logger.debug('WEB_APPLICATION: %d', id(self))
+
 class HTTPServer(object):
 
     @classmethod
@@ -81,7 +86,7 @@ class HTTPServer(object):
                     backlog=options.backlog)
             sockets_list.append(sockets)
 
-        CommonTimer.instance().start(TApplication.instance())
+        CommonTimer.instance().start(TApplication.instance().timer_callback)
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,

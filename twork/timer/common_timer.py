@@ -17,10 +17,14 @@
 
 import functools
 import time
-import tornado.web
+from tornado.ioloop import PeriodicCallback
 
-from util import options
+from util import define, options
 from util import g_logger
+
+define("timer_interval", default = 30,
+        help = "Timer Interval, TimeUnit: seconds", type = int)
+
 
 class CommonTimer(object):
     '''Common Timer'''
@@ -34,27 +38,17 @@ class CommonTimer(object):
     def __init__(self):
         self.__scheduler = None
 
-    def __callback(self, web_app):
-        g_logger.debug('WEB_APPLICATION: %d', id(web_app))
-    
-    def start(self, web_app):
+    def start(self, callback):
         assert options.timer_interval > 0
 
         if self.__scheduler is not None:
             return
 
-        __callback = functools.partial(self.__callback, web_app)
-
-        tornado.ioloop.IOLoop.instance().add_timeout(time.time(), __callback)
-
         self.__scheduler = \
-            tornado.ioloop.PeriodicCallback(__callback,
+            PeriodicCallback(callback,
                     options.timer_interval * 1000)
         self.__scheduler.start()
-        pass
 
     def stop(self):
         if self.__scheduler is not None:
             self.__scheduler.stop()
-        pass
-    pass
