@@ -21,7 +21,11 @@
 import logging
 import logging.handlers
 
-from pyutil.lib.tornado.options import options
+from pyutil.lib.tornado.options import define, options
+
+define("v", default = False,
+        help = "verbose, print debug info", type = bool)
+
 
 # 创建记录器
 g_logger = logging.getLogger()

@@ -14,11 +14,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''
-@feature: Config Options
+'''feature: Config Options
 '''
 
-import sys
 import os
 
 import assembly
@@ -26,41 +24,25 @@ import assembly
 import pyutil.lib.tornado as tornado
 from pyutil.lib.tornado.options import define, options
 
-DEFAULT_OPTIONS_PORT              = 8000 
 DEFAULT_OPTIONS_LOG_ROOT_PATH     = \
     os.path.realpath(os.path.join(assembly.PROJECT_PATH, 'log'))
 
 def define_options():
-    # 日志
+    define("app_name", default = 'twork',
+            help = "Set Log Level")
+
     define("log_level", default = 'DEBUG', 
             help = "Set Log Level")
 
     define('log_root_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH, 
             help = 'Log file stored root path')
 
-    define("app_name", default = 'twork',
-            help = "Set Log Level")
-
-    define("v", default = False,
-            help = "verbose, print debug info", type = bool)
-
-    define("bind_ip", default = '0.0.0.0',
-            help = "Run server on a specific IP")
-
-    define("port", default = DEFAULT_OPTIONS_PORT,
-            help = "Run server on a specific port", type = int)
-
-    define("backlog", default = 128,
-            help = "the same meaning as for socket.listen", type = int)
-
-    define("env", default="dev", help="service run environment")
-    
     define("config", default = '%s/etc/twork.conf' % assembly.PROJECT_PATH,
             help = "Configuration file specifying options")
 
 def _usage():
     print 'Usage: ./service -log_root_path=SpecifiedFile -port=SpecifiedPort'
-    sys.exit()
+    os._exit(0)
 
 def _check_dir_tail(dir_name):
     if not dir_name or '' == dir_name:

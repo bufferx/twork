@@ -28,10 +28,18 @@ import assembly
 
 import action
 
-from util import options
+from util import define, options
 from util import g_logger
 
 from timer.common_timer import CommonTimer
+
+define("bind_ip", default = '0.0.0.0',
+        help = "run server on a specific ip")
+define("port", default = 8000,
+        help = "run server on a specific port", type = int)
+define("backlog", default = 128,
+        help = "the same meaning as for socket.listen", type = int)
+define("env", default="dev", help="service run environment")
 
 
 class TApplication(tornado.web.Application):
