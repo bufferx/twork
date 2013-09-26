@@ -42,13 +42,6 @@ class BaseHandler(RequestHandler):
     def on_connection_close(self):
         g_logger.info('connection close.')
 
-    def on_finish(self):
-        '''Require: tornado.version > 2.1.1
-        '''
-        request_time = 1000.0 * self.request.request_time()
-        g_logger.info("%d %s %.2fms", self.get_status(),
-                   self._request_summary(), request_time)
-
     def finish(self, chunk=None):
         if not self.request.connection.stream.closed():
             RequestHandler.finish(self, chunk)
