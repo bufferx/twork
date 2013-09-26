@@ -31,7 +31,7 @@ import action
 from util import options
 from util import g_logger
 
-from timer.common import CommonTimer
+from timer.common_timer import CommonTimer
 
 
 class TApplication(tornado.web.Application):
@@ -57,7 +57,7 @@ class TApplication(tornado.web.Application):
                 }
 
         handlers = [
-            (r'^/v1.0/twork/stat$', action.StatInfoHandler,
+            (r'^/v1.0/twork/stats$', action.StatInfoHandler,
                 {'version': (1, 0)}),
         ]
 
