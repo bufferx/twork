@@ -42,7 +42,7 @@ def init_logger():
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
-        _log_path = '%s/%s.Main.log' % (options.log_path, options.app_name.upper())
+        _log_path = '%s/%s.access.log' % (options.log_path, options.app_name)
         _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
         _hand.setLevel(logging.DEBUG)
         _hand.setFormatter(msg_formatter)
