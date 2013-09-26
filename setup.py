@@ -59,7 +59,7 @@ distutils.core.setup(
     description="twork is a neTwork server framework based on tornado",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
-        "twork": ["www/static/favicon.ico"],
+        "twork": ["web/static/favicon.ico"],
     },
     entry_points = {
      'console_scripts': [
