@@ -29,7 +29,7 @@ from domain.object.error import ParameterTypeError
 
 class BaseHandler(RequestHandler):
 
-    HTTP_SERVER_NAME = 'ZWS/1.0'
+    HTTP_SERVER_NAME = 'TWS/1.0'
 
     def initialize(self, version):
         self.version = version
@@ -40,7 +40,7 @@ class BaseHandler(RequestHandler):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
 
     def on_connection_close(self):
-        g_logger.info('connection close.')
+        g_logger.debug('connection close.')
 
     def finish(self, chunk=None):
         if not self.request.connection.stream.closed():

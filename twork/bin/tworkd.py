@@ -18,17 +18,16 @@
 ''' tornado server
 '''
 
+import tornado
+from tornado.httpclient import AsyncHTTPClient
+
 import sys
 import signal
 import socket
 
-import tornado
-from tornado.httpclient import AsyncHTTPClient
-
 import assembly
 
 from config.options import init_options
-from domain.object.db import DB
 
 from util import options
 from util import init_logger, g_logger
