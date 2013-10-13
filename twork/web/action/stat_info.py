@@ -28,6 +28,8 @@ from domain.object.error import BaseError
 
 class StatInfoHandler(BaseHandler):
 
+    ST_ITEM          = 'STAT'
+
     def get(self):
         if __debug__:
             g_logger.debug(self.request.body)

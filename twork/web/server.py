@@ -52,9 +52,14 @@ class TApplication(tornado.web.Application):
 
     @property
     def stat_info(self):
+        def calcu():
+            for handler, st in self._handler_st.iteritems():
+                for method, _st in st.iteritems():
+                    _st['rt_avg'] = _st['rt'] / _st['requests']
+        calcu()
         fd_all = len(IOLoop.instance()._handlers)
         return {'fd': {'all': fd_all}, 'uptime': '%.3f' % (time.time() -
-            self._start_time)}
+            self._start_time), 'handler': self._handler_st}
 
     def __init__(self):
         debug = options.env == "debug"
@@ -70,6 +75,7 @@ class TApplication(tornado.web.Application):
         ]
 
         self._start_time = time.time()
+        self._handler_st = {}
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
 
@@ -77,6 +83,18 @@ class TApplication(tornado.web.Application):
 
     def timer_callback(self):
         g_logger.debug('WEB_APPLICATION: %d', id(self))
+
+    def update_handler_st(self, st_item, method, request_time):
+        if st_item not in self._handler_st:
+            self._handler_st[st_item] = {}
+
+        if method not in self._handler_st[st_item]:
+            self._handler_st[st_item][method] = {}
+            self._handler_st[st_item][method]['requests'] = 0
+            self._handler_st[st_item][method]['rt'] = 0
+
+        self._handler_st[st_item][method]['rt'] += request_time
+        self._handler_st[st_item][method]['requests'] += 1
 
 class HTTPServer(object):
 

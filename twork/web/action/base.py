@@ -30,6 +30,7 @@ from domain.object.error import ParameterTypeError
 class BaseHandler(RequestHandler):
 
     HTTP_SERVER_NAME = 'TWS/1.0'
+    ST_ITEM          = 'BASE'
 
     def initialize(self, version):
         self.version = version
@@ -41,6 +42,10 @@ class BaseHandler(RequestHandler):
 
     def on_connection_close(self):
         g_logger.debug('connection close.')
+
+    def on_finish(self):
+        self.application.update_handler_st(self.ST_ITEM,
+                self.request.method, self.request.request_time())
 
     def finish(self, chunk=None):
         if not self.request.connection.stream.closed():
