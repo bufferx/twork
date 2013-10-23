@@ -21,7 +21,6 @@
 from tornado.web import RequestHandler
 
 from util import g_logger
-from util import HttpUtil
 from util import decorator as util_decorator
 
 from domain.object.error import ParameterEmptyError
@@ -33,9 +32,15 @@ class BaseHandler(RequestHandler):
     ST_ITEM          = 'BASE'
 
     def initialize(self, version):
-        self.version = version
+        self.VERSION = version
         if __debug__:
-            g_logger.debug(HttpUtil.get_header_string(self.request))
+            g_logger.debug(self.request)
+
+    @property
+    def version(self):
+        if not hasattr(self, '_version'):
+            self._version = 'V%s' % ('.'.join(['%d' % i for i in self.VERSION]))
+        return self._version
 
     def set_default_headers(self):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
