@@ -59,7 +59,35 @@ def init_logger():
 
         logger.addHandler(_hand)
 
+    def __init_biz_logger():
+        biz_logger = logging.getLogger('root.biz')
+
+        # 设置消息格式
+        if options.v:
+            msg_formatter = logging.Formatter('%(asctime)s\t%(version)s\t\
+%(module)s:%(lineno)d\t%(message)s',
+                    '%Y-%m-%d %H:%M:%S')
+        else:
+            biz_logger.propagate = False
+            msg_formatter = logging.Formatter('%(asctime)s\t%(version)s\t\
+%(message)s',
+                    '%Y-%m-%d %H:%M:%S')
+
+        # 创建处理器
+        _log_path = '%s/%s.biz.log' % (options.log_path, options.app_name)
+        _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
+        _hand.setLevel(logging.DEBUG)
+        _hand.setFormatter(msg_formatter)
+
+        try:
+            biz_logger.setLevel(getattr(logging, options.log_level.upper()))
+        except AttributeError as e:
+            biz_logger.setLevel(logging.DEBUG)
+
+        biz_logger.addHandler(_hand)
+
     __init_root_logger()
+    __init_biz_logger()
 
 def main():
     ''' main function
