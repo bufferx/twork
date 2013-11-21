@@ -62,7 +62,7 @@ class TApplication(tornado.web.Application):
             self._start_time), 'handler': self._handler_st}
 
     def __init__(self):
-        debug = options.env == "debug"
+        debug = options.env == "dev"
         app_settings = { 
                 'gzip': 'on',
                 'static_path': assembly.STATIC_PATH,
