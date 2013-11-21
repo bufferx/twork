@@ -39,7 +39,7 @@ define("port", default = 8000,
         help = "run server on a specific port", type = int)
 define("backlog", default = 128,
         help = "the same meaning as for socket.listen", type = int)
-define("env", default="dev", help="service run environment")
+define("env", default="debug", help="service run environment")
 
 
 class TApplication(tornado.web.Application):
@@ -62,7 +62,7 @@ class TApplication(tornado.web.Application):
             self._start_time), 'handler': self._handler_st}
 
     def __init__(self):
-        debug = options.env == "dev"
+        debug = options.env == "debug"
         app_settings = { 
                 'gzip': 'on',
                 'static_path': assembly.STATIC_PATH,
