@@ -34,7 +34,10 @@ Supervisor
 ------------
 * [supervisord](http://supervisord.org/)
 * [conf-template](https://github.com/bufferx/supervisor_conf_tpl)
-* command: python -OO $VIRTUALENV/bin/tworkd -config=$TWORK_CONFIG_PATH
+* command: python -OO $VIRTUALENV/bin/tworkd -config_file=$TWORK_CONFIG_PATH
+
+Publish
+* bash script/deploy.sh
 
 Case
 ------------
