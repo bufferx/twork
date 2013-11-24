@@ -18,6 +18,8 @@
 ''' tornado web application 
 '''
 
+from hashlib import md5
+import os
 import time
 
 import tornado.httpserver
@@ -62,13 +64,14 @@ class TApplication(tornado.web.Application):
             self._start_time), 'handler': self._handler_st}
 
     def __init__(self):
+        self.init_app_info()
+
         debug = options.env == "debug"
         app_settings = { 
                 'gzip': 'on',
                 'static_path': assembly.STATIC_PATH,
                 'debug':debug,
                 }
-
         handlers = [
             (r'^/v1.0/twork/stats$', action.StatInfoHandler,
                 {'version': (1, 0)}),
@@ -95,6 +98,25 @@ class TApplication(tornado.web.Application):
 
         self._handler_st[st_item][method]['rt'] += request_time
         self._handler_st[st_item][method]['requests'] += 1
+
+    def init_app_info(self):
+        self.app_version = ''
+        self.app_hash = ''
+
+        for root, dirs, files in \
+            os.walk(os.path.join(os.path.realpath(options.deploy_path), \
+                'dist')):
+            for f in files:
+                if f[-3:] != 'egg':
+                    continue
+                self.app_version = '%s; %s' % (f[:-4], options.app_version)
+                app_egg = '%s/%s' % (root, f)
+
+        if not self.app_version:
+            return
+
+        with open(app_egg, 'r') as f:
+            self.app_hash = md5(f.read()).hexdigest()
 
 class HTTPServer(object):
 

@@ -31,6 +31,9 @@ def define_options():
     define("app_name", default = 'twork',
             help = "Set Log Level")
 
+    define("app_version", default = '',
+            help = "The Application version")
+
     define("log_level", default = 'DEBUG',
             help = "Set Log Level")
 

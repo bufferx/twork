@@ -22,9 +22,11 @@ from tornado.web import RequestHandler
 
 from util import g_logger
 from util import decorator as util_decorator
+from util import options
 
 from domain.object.error import ParameterEmptyError
 from domain.object.error import ParameterTypeError
+from domain.object.common import USER_AGENT
 
 class BaseHandler(RequestHandler):
 
@@ -33,6 +35,8 @@ class BaseHandler(RequestHandler):
 
     def initialize(self, version):
         self.VERSION = version
+        self.USER_AGENT = '%s_%s' % (USER_AGENT, options.env.upper())
+
         if __debug__:
             g_logger.debug(self.request)
 
@@ -44,6 +48,8 @@ class BaseHandler(RequestHandler):
 
     def set_default_headers(self):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
+        self.set_header('App-Version', self.application.app_version)
+        self.set_header('App-Hash', self.application.app_hash)
 
     def on_connection_close(self):
         g_logger.debug('connection close.')
