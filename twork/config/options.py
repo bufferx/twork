@@ -31,17 +31,17 @@ def define_options():
     define("app_name", default = 'twork',
             help = "Set Log Level")
 
-    define("log_level", default = 'DEBUG', 
+    define("log_level", default = 'DEBUG',
             help = "Set Log Level")
 
-    define('log_root_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH, 
+    define('deploy_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH,
             help = 'Log file stored root path')
 
-    define("config", default = '%s/etc/twork.conf' % assembly.PROJECT_PATH,
+    define("config_file", default = '%s/etc/twork.conf' % assembly.PROJECT_PATH,
             help = "Configuration file specifying options")
 
 def _usage():
-    print 'Usage: ./service -log_root_path=SpecifiedFile -port=SpecifiedPort'
+    print 'Usage: ./service -deploy_path=SpecifiedFile -port=SpecifiedPort'
     os._exit(0)
 
 def _check_dir_tail(dir_name):
@@ -63,10 +63,10 @@ def init_options():
     define_options()
     # maybe some options will be use before load config file
     tornado.options.parse_command_line()
-    if os.path.exists(options.config):
-        tornado.options.parse_config_file(options.config)
-    if not options.log_root_path or not options.port:
+    if os.path.exists(options.config_file):
+        tornado.options.parse_config_file(options.config_file)
+    if not options.deploy_path or not options.port:
         _usage()
-    options.log_root_path = _check_dir_tail(options.log_root_path)
-    options.log_path = '%s/%d' % (options.log_root_path, options.port)
+    options.deploy_path = _check_dir_tail(options.deploy_path)
+    options.log_path = '%s/log/%d' % (options.deploy_path, options.port)
     _mkdir(options.log_path)
