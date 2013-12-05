@@ -28,12 +28,12 @@ from tornado.ioloop import IOLoop
 
 import assembly
 
-import action
+from twork.web import action
 
-from util import define, options
-from util import g_logger
+from tornado.options import define, options
+from twork.util import g_logger
 
-from timer.common_timer import CommonTimer
+from twork.timer.common_timer import CommonTimer
 
 define("bind_ip", default = '0.0.0.0',
         help = "run server on a specific ip")
@@ -104,7 +104,7 @@ class TApplication(tornado.web.Application):
         self.app_hash = ''
 
         for root, dirs, files in \
-            os.walk(os.path.join(os.path.realpath(options.deploy_path), \
+            os.walk(os.path.join(os.path.realpath(options.log_root), \
                 'dist')):
             for f in files:
                 if f[-3:] != 'egg':

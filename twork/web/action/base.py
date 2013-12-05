@@ -19,10 +19,10 @@
 '''
 
 from tornado.web import RequestHandler
+from tornado.options import options
 
 from util import g_logger
 from util import decorator as util_decorator
-from util import options
 
 from domain.object.error import ParameterEmptyError
 from domain.object.error import ParameterTypeError

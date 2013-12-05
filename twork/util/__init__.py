@@ -18,9 +18,8 @@
 import bf4x_pyutil.decorator as decorator
 from bf4x_pyutil.common import CommonUtil
 from bf4x_pyutil.http import HttpUtil
-from bf4x_pyutil.lib.tornado.options import define, options
 
-from log import init_logger, g_logger
+from twork.util.log import init_logger, g_logger
 
 def main():
     ''' main function

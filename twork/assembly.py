@@ -22,11 +22,7 @@ import os
 import sys
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
-SOURCE_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..'))
-PROJECT_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..', '..'))
-
-if SOURCE_PATH not in sys.path:
-    sys.path.append(SOURCE_PATH)
+PROJECT_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..'))
 
 if PROJECT_PATH not in sys.path:
     sys.path.append(PROJECT_PATH)

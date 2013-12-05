@@ -21,14 +21,31 @@
 import logging
 import logging.handlers
 
-from bf4x_pyutil.lib.tornado.options import define, options
+import os
 
-define("v", default = False,
-        help = "verbose, print debug info", type = bool)
+from tornado.options import define, options
+
+from twork import assembly
+
+
+define('v', default=False,
+        help='Verbose, Print Debug Info', type=bool)
+
+define('log_level', default='DEBUG',
+        help="Set Log Level")
+
+define('log_root', default=assembly.PROJECT_PATH,
+        help='Log File Stored Root Path')
 
 
 # 创建记录器
 g_logger = logging.getLogger()
+
+def _mkdir(file_dir):
+    real_path = os.path.realpath(file_dir)
+    if not os.path.exists(real_path):
+        os.makedirs(real_path)
+        pass
 
 def init_logger():
     def __init_root_logger():
@@ -46,7 +63,7 @@ def init_logger():
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
-        _log_path = '%s/%s.access.log' % (options.log_path, options.app_name)
+        _log_path = '%s/%s.access.log' % (log_path, options.app_name)
         _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
         _hand.setLevel(logging.DEBUG)
         _hand.setFormatter(msg_formatter)
@@ -74,7 +91,7 @@ def init_logger():
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
-        _log_path = '%s/%s.biz.log' % (options.log_path, options.app_name)
+        _log_path = '%s/%s.biz.log' % (log_path, options.app_name)
         _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
         _hand.setLevel(logging.DEBUG)
         _hand.setFormatter(msg_formatter)
@@ -86,6 +103,8 @@ def init_logger():
 
         biz_logger.addHandler(_hand)
 
+    log_path = '%s/log/%d' % (options.log_root, options.port)
+    _mkdir(log_path)
     __init_root_logger()
     __init_biz_logger()
 

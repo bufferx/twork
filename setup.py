@@ -43,7 +43,7 @@ kwargs = {}
 major, minor = sys.version_info[:2]
 python_26 = (major > 2 or (major == 2 and minor >= 6))
 
-version = "1.0.9"
+version = "1.0.10"
 
 if major >= 3:
     import setuptools  # setuptools is required for use_2to3
@@ -63,7 +63,7 @@ distutils.core.setup(
     },
     entry_points = {
      'console_scripts': [
-         'tworkd = twork.bin.tworkd:main',
+         'tworkd = twork.tworkd:main',
          ],
       },
     **kwargs

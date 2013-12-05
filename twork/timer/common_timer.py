@@ -17,9 +17,10 @@
 
 import functools
 import time
-from tornado.ioloop import PeriodicCallback
 
-from util import define, options
+from tornado.ioloop import PeriodicCallback
+from tornado.options import define, options
+
 from util import g_logger
 
 define("timer_interval", default = 30,

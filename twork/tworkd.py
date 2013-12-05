@@ -23,16 +23,14 @@ from tornado.httpclient import AsyncHTTPClient
 
 import sys
 import signal
-import socket
+
+from tornado.options import options
 
 import assembly
 
-from config.options import init_options
-
-from util import options
-from util import init_logger, g_logger
-
-from web.server import HTTPServer
+from twork.options import init_options
+from twork.util import init_logger, g_logger
+from twork.web.server import HTTPServer
 
 
 def handle_signal_kill(sig, frame):
@@ -64,7 +62,6 @@ def main():
         if sys.version_info[:3] >= (2, 5, 2):
             #pycurl minimum supported version is 7.18.2
             AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
-            pass
 
         HTTPServer.instance().start()
         tornado.ioloop.IOLoop.instance().start()
@@ -73,8 +70,6 @@ def main():
         tornado.ioloop.IOLoop.instance().close(all_fds=True)
 
         g_logger.info('STOP TORNADO SERVER ...')
-    except socket.error as e:
-        g_logger.warning('Socket Error: %s', e, exc_info=True)
     except KeyboardInterrupt as e:
         g_logger.warning('Gently Quit')
     except Exception as e:

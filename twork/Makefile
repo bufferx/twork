@@ -3,8 +3,6 @@ all:
 
 .PHONY : clean
 clean:
-	cd ./bin/ && make clean
-	cd ./config/ && make clean
 	cd ./domain/ && make clean
 	cd ./test/ && make clean
 	cd ./timer/ && make clean
