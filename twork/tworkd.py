@@ -43,9 +43,19 @@ def _quit():
 
     g_logger.info('STOP TORNADO SERVER ...')
 
-def _handle_signal_kill(sig, frame):
+def _handle_signal(sig, frame):
     g_logger.warning('Catch SIG: %d, Gently Quit', sig)
     _quit()
+
+def _setup_signal():
+    # 忽略Broken Pipe信号
+    signal.signal(signal.SIGPIPE, signal.SIG_IGN);
+
+    # 处理kill信号
+    signal.signal(signal.SIGINT, _handle_signal)
+    signal.signal(signal.SIGQUIT, _handle_signal)
+    signal.signal(signal.SIGTERM, _handle_signal)
+    signal.signal(signal.SIGHUP, _handle_signal)
 
 def main():
     ''' main function
@@ -53,14 +63,7 @@ def main():
     init_options()
     init_logger()
 
-    # 忽略Broken Pipe信号
-    signal.signal(signal.SIGPIPE, signal.SIG_IGN);
-                        
-    # 处理kill信号
-    signal.signal(signal.SIGINT, _handle_signal_kill)
-    signal.signal(signal.SIGQUIT, _handle_signal_kill)
-    signal.signal(signal.SIGTERM, _handle_signal_kill)
-    signal.signal(signal.SIGHUP, _handle_signal_kill)
+    _setup_signal()
 
     g_logger.info('START TORNADO SERVER ...')
 
@@ -73,6 +76,7 @@ def main():
             AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 
         HTTPServer.instance().start()
+
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:
         g_logger.error('UnCaught Exception: %s', e, exc_info=True)

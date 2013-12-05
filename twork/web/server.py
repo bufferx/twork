@@ -35,12 +35,12 @@ from twork.util import g_logger
 
 from twork.timer.common_timer import CommonTimer
 
-define("bind_ip", default = '0.0.0.0',
-        help = "run server on a specific ip")
-define("port", default = 8000,
-        help = "run server on a specific port", type = int)
-define("backlog", default = 128,
-        help = "the same meaning as for socket.listen", type = int)
+define("bind_ip", default='0.0.0.0',
+        help="run server on a specific ip")
+define("port", default=8000,
+        help="run server on a specific port", type=int)
+define("backlog", default=128,
+        help="the same meaning as for socket.listen", type=int)
 define("env", default="debug", help="service run environment")
 
 

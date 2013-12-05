@@ -25,13 +25,11 @@ from tornado.options import define, options
 from twork import assembly
 
 
-define("app_name", default = 'twork',
+define("app_name", default='twork',
         help = "Set Log Level")
-
-define("app_version", default = '',
+define("app_version", default='',
         help = "The Application Version")
-
-define("config_file", default = '%s/conf/twork.conf' % assembly.PROJECT_PATH,
+define("config_file", default='%s/conf/twork.conf' % assembly.PROJECT_PATH,
         help = "Configuration File Specifying Options")
 
 
