@@ -33,10 +33,19 @@ from twork.util import init_logger, g_logger
 from twork.web.server import HTTPServer
 
 
-def handle_signal_kill(sig, frame):
-    g_logger.warning( 'Catch SIG: %d' % sig )
+def _quit():
+    if not tornado.ioloop.IOLoop.instance().running():
+        return
 
+    HTTPServer.instance().stop()
     tornado.ioloop.IOLoop.instance().stop()
+    tornado.ioloop.IOLoop.instance().close(all_fds=True)
+
+    g_logger.info('STOP TORNADO SERVER ...')
+
+def _handle_signal_kill(sig, frame):
+    g_logger.warning('Catch SIG: %d, Gently Quit', sig)
+    _quit()
 
 def main():
     ''' main function
@@ -48,10 +57,10 @@ def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN);
                         
     # 处理kill信号
-    signal.signal(signal.SIGINT, handle_signal_kill)
-    signal.signal(signal.SIGQUIT, handle_signal_kill)
-    signal.signal(signal.SIGTERM, handle_signal_kill)
-    signal.signal(signal.SIGHUP, handle_signal_kill)
+    signal.signal(signal.SIGINT, _handle_signal_kill)
+    signal.signal(signal.SIGQUIT, _handle_signal_kill)
+    signal.signal(signal.SIGTERM, _handle_signal_kill)
+    signal.signal(signal.SIGHUP, _handle_signal_kill)
 
     g_logger.info('START TORNADO SERVER ...')
 
@@ -65,15 +74,10 @@ def main():
 
         HTTPServer.instance().start()
         tornado.ioloop.IOLoop.instance().start()
-
-        HTTPServer.instance().stop()
-        tornado.ioloop.IOLoop.instance().close(all_fds=True)
-
-        g_logger.info('STOP TORNADO SERVER ...')
-    except KeyboardInterrupt as e:
-        g_logger.warning('Gently Quit')
     except Exception as e:
         g_logger.error('UnCaught Exception: %s', e, exc_info=True)
+    finally:
+        _quit()
 
 if __name__ == '__main__':
     main()
