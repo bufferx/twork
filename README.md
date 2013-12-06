@@ -41,7 +41,7 @@ Publish
 
 Case
 ------------
-* http://localhost:8000/v1.0/twork/stats
+* http://localhost:8000/v1.0/twork/stat
 
 Fork
 ------------

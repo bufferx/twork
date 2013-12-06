@@ -17,4 +17,4 @@
 ''' handler list
 '''
 
-from stat_info import StatInfoHandler
+from stat import StatHandler
