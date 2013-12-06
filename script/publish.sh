@@ -22,8 +22,8 @@
 USAGE="${0} -e[EGG_PATH] -m[GIT_MESSAGE] -u[USER] -x[DEPLOY_PATH] -v[DEPLOY_VIRTUALENV]";
 
 DEPLOY_SERVER_LIST="localhost";
-DEPLOY_CFG_PROD="twork/etc/twork.prod.conf";
-DEPLOY_CFG_DEV="twork/etc/twork.dev.conf";
+DEPLOY_CFG_PROD="twork/conf/twork.prod.conf";
+DEPLOY_CFG_DEV="twork/conf/twork.dev.conf";
 DEPLOY_SCRIPT="script/killall.sh";
 
 if [ $# -lt 10 ]; then
@@ -87,6 +87,7 @@ do
     scp ${DEPLOY_SCRIPT} "${USER}@${server}:${DEPLOY_PATH}/script";
     ssh -A ${USER}@${server} "cd ${DEPLOY_PATH};
     source ${DEPLOY_VIRTUALENV}/bin/activate;
+    pip uninstall twork;
     easy_install ${DEPLOY_PATH}/${DEPLOY_EGG};
     bash ${DEPLOY_SCRIPT};
     ";

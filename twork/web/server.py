@@ -23,16 +23,13 @@ import os
 import time
 
 import tornado.httpserver
-import tornado.web
 from tornado.ioloop import IOLoop
-
-import assembly
+from tornado.options import define, options
+import tornado.web
 
 from twork.web import action
-
-from tornado.options import define, options
+from twork.web import assembly
 from twork.util import g_logger
-
 from twork.timer.common_timer import CommonTimer
 
 define("bind_ip", default='0.0.0.0',

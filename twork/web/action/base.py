@@ -21,12 +21,12 @@
 from tornado.web import RequestHandler
 from tornado.options import options
 
-from util import g_logger
-from util import decorator as util_decorator
+from twork.util import g_logger
+from twork.util import decorator as util_decorator
 
-from domain.object.error import ParameterEmptyError
-from domain.object.error import ParameterTypeError
-from domain.object.common import USER_AGENT
+from twork.domain.object.error import ParameterEmptyError
+from twork.domain.object.error import ParameterTypeError
+from twork.domain.object.common import USER_AGENT
 
 class BaseHandler(RequestHandler):
 
