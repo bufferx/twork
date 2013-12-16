@@ -19,7 +19,6 @@
 '''
 
 import tornado
-from tornado.httpclient import AsyncHTTPClient
 
 import sys
 import signal
@@ -71,10 +70,6 @@ def main():
         g_logger.info('Options: (%s, %s)', key, option.value())
 
     try:
-        if sys.version_info[:3] >= (2, 5, 2):
-            #pycurl minimum supported version is 7.18.2
-            AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
-
         HTTPServer.instance().start()
 
         tornado.ioloop.IOLoop.instance().start()
