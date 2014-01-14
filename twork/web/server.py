@@ -25,6 +25,7 @@ import time
 import tornado.httpserver
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
+from tornado import process
 import tornado.web
 
 from twork.web import action
@@ -39,7 +40,8 @@ define("port", default=8000,
 define("backlog", default=128,
         help="the same meaning as for socket.listen", type=int)
 define("env", default="debug", help="service run environment")
-
+define("num_processes", default=-1,
+        help="number of processes to fork, 0 for the number of cores", type=int)
 
 class TApplication(tornado.web.Application):
 
@@ -130,6 +132,9 @@ class HTTPServer(object):
                     address=bind_ip,
                     backlog=options.backlog)
             sockets_list.append(sockets)
+
+        if options.num_processes >= 0:
+            process.fork_processes(options.num_processes)
 
         CommonTimer.instance().start(TApplication.instance().timer_callback)
 
