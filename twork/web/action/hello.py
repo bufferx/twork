@@ -38,13 +38,14 @@ from twork.domain.object.error import ErrorCode as ECODE
 from twork.domain.object.error import BaseError
 
 from twork.util import g_logger
-from twork.util import HttpUtil
 from twork.util import decorator as util_decorator
 
-from twork.web.base import BaseHandler
+from twork.web.action.base import BaseHandler
 
 
 class HelloHandler(BaseHandler):
+
+    ST_ITEM          = 'HELLO'
 
     @util_decorator.time_it(g_logger)
     @tornado.web.asynchronous
@@ -80,7 +81,7 @@ class HelloHandler(BaseHandler):
         http_client.fetch(request, self.__handle_async_request)
 
     def __handle_async_request(self, response):
-        g_logger.debug('CURL_ERRNO\t%d', response.error.errno)
+        #g_logger.debug('CURL_ERRNO\t%d', response.error.errno)
         g_logger.debug('STACK_CONTEXT\tself.name=%s',  self.name)
         g_logger.debug('RESPONSE_ERROR\t%s',  response.error)
         g_logger.debug('RESPONSE\t%s',  response)

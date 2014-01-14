@@ -56,6 +56,14 @@ def _setup_signal():
     signal.signal(signal.SIGTERM, _handle_signal)
     signal.signal(signal.SIGHUP, _handle_signal)
 
+def _log_options():
+    if tornado.version_info < (3, 0, 0, 0):
+        for key, option in options.iteritems():
+            g_logger.info('Options: (%s, %s)', key, option.value())
+    else:
+        for key, option in options.items():
+            g_logger.info('Options: (%s, %s)', key, option)
+
 def main():
     ''' main function
     '''
@@ -64,10 +72,9 @@ def main():
 
     _setup_signal()
 
-    g_logger.info('START TORNADO SERVER ...')
+    _log_options()
 
-    for key, option in options.iteritems():
-        g_logger.info('Options: (%s, %s)', key, option.value())
+    g_logger.info('START TORNADO SERVER ...')
 
     try:
         HTTPServer.instance().start()
