@@ -21,6 +21,8 @@
 from tornado.web import RequestHandler
 from tornado.options import options
 
+import twork
+
 from twork.util import g_logger
 from twork.util import decorator as util_decorator
 
@@ -30,7 +32,6 @@ from twork.domain.object.common import USER_AGENT
 
 class BaseHandler(RequestHandler):
 
-    HTTP_SERVER_NAME = 'TWS/1.0'
     ST_ITEM          = 'BASE'
 
     def initialize(self, version):
@@ -47,9 +48,7 @@ class BaseHandler(RequestHandler):
         return self._version
 
     def set_default_headers(self):
-        self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
-        self.set_header('App-Version', self.application.app_version)
-        self.set_header('App-Hash', self.application.app_hash)
+        self.set_header('Server', twork.SERVER_INFO)
 
     def on_connection_close(self):
         g_logger.debug('connection close.')

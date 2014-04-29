@@ -72,7 +72,7 @@ class TApplication(tornado.web.Application):
                 'debug':debug,
                 }
         handlers = [
-            (r'^/v1.0/twork/stat$', action.StatHandler,
+            (r'^/v1.0/twork/stats$', action.StatHandler,
                 {'version': (1, 0)}),
         ]
 
