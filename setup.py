@@ -63,7 +63,7 @@ distutils.core.setup(
     package_data = {
         "twork": ["web/static/favicon.ico"],
     },
-    scripts=["script/killall.sh"],
+    scripts=["script/killall.sh", "script/logcut.sh", "script/reopenlog.sh",],
     entry_points = {
      'console_scripts': [
          'tworkd = twork.tworkd:main',

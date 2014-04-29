@@ -46,6 +46,10 @@ def _handle_signal(sig, frame):
     g_logger.warning('Catch SIG: %d, Gently Quit', sig)
     _quit()
 
+def _reopen_log(sig, frame):
+    g_logger.warning('Catch SIG: %d, ReOpen Log', sig)
+    init_logger()
+
 def _setup_signal():
     # 忽略Broken Pipe信号
     signal.signal(signal.SIGPIPE, signal.SIG_IGN);
@@ -55,6 +59,8 @@ def _setup_signal():
     signal.signal(signal.SIGQUIT, _handle_signal)
     signal.signal(signal.SIGTERM, _handle_signal)
     signal.signal(signal.SIGHUP, _handle_signal)
+
+    signal.signal(signal.SIGUSR1, _reopen_log)
 
 def _log_options():
     if tornado.version_info < (3, 0, 0, 0):
