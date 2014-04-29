@@ -54,12 +54,12 @@ def init_logger():
         # 设置消息格式
         if options.v:
             msg_formatter = logging.Formatter('%(asctime)s - %(name)s - \
-    %(levelname)1.1s - %(module)s.%(funcName)s:%(lineno)d - %(process)d - \
-    %(thread)d - %(message)s',
+%(levelname)1.1s - %(module)s.%(funcName)s:%(lineno)d - %(process)d - \
+%(thread)d - %(message)s',
                     '%Y-%m-%d %H:%M:%S')
         else:
             msg_formatter = logging.Formatter('%(asctime)s - %(levelname)1.1s - \
-    %(module)s:%(lineno)d - %(message)s',
+%(module)s:%(lineno)d - %(message)s',
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
