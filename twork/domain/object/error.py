@@ -21,17 +21,18 @@ class ErrorCode(object):
     DEFAULT = 0xff
     SUCCESS = 0x00
     # 参数
-    PARAMETERS = 100 
-    PARAMETERS_EMPTY = 101 
-    PARAMETERS_TYPE = 102 
-    PARAMETERS_DATE = 103 
-    PARAMETERS_HOTELIDS = 104
+    PARAMETERS = 100
+    PARAMETERS_EMPTY = 101
+    PARAMETERS_TYPE = 102
+    PARAMETERS_DATE = 103
     # 网络IO
-    TCP = 500 
-    HTTP = 501 
+    TCP = 500
+    HTTP = 501
     # 业务逻辑
-    DB_ERROR = 301 
-    DB_EMPTY = 302 
+    DB_ERROR = 301
+    DB_EMPTY = 302
+    # others
+    TOO_MANY_REQUEST = 400
 
 class ErrorMessage(object):
     SUCCESS = 'SUCCESS'
@@ -52,6 +53,14 @@ class BaseError(Exception):
     def __str__(self):
         return self.e_msg 
     pass
+
+class TooManyRequest(BaseError):
+    def __init__(self, msg=''):
+        self.e_code = ErrorCode.TOO_MANY_REQUEST
+        self.e_msg = 'Too Many Requests: %s' % msg
+
+    def __str__(self):
+        return self.e_msg
 
 class ParameterError(BaseError):
     def __init__(self, msg=''):

@@ -40,6 +40,10 @@ class StatHandler(BaseHandler):
 
         try:
             result['data'] = self.application.stat_info
+        except BaseError, e:
+            g_logger.error(e, exc_info=True if __debug__ else False)
+            result['code'] = e.e_code
+            result['msg']  = e.e_msg
         except Exception, e:
             g_logger.error(e, exc_info=True if __debug__ else False)
             result['code'] = ECODE.DEFAULT

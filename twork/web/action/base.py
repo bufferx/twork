@@ -19,7 +19,8 @@
 '''
 
 from tornado.web import RequestHandler
-from tornado.options import options
+from tornado.web import HTTPError
+from tornado.options import define, options
 
 import twork
 
@@ -28,6 +29,9 @@ from twork.util import g_logger
 from twork.domain.object.error import ParameterEmptyError
 from twork.domain.object.error import ParameterTypeError
 from twork.domain.object.common import USER_AGENT
+
+define("mcq", default=0, help = "Max Concurrency reQuests")
+
 
 class BaseHandler(RequestHandler):
 
@@ -46,6 +50,15 @@ class BaseHandler(RequestHandler):
             self._version = 'V%s' % ('.'.join(['%d' % i for i in self.VERSION]))
         return self._version
 
+    def prepare(self):
+        if self.application._requests >= options.mcq:
+            g_logger.warning('Too Many Request: %d',
+                    self.application._requests)
+            self._mcq_error = True
+            raise HTTPError(403)
+
+        self.application._requests += 1
+
     def set_default_headers(self):
         self.set_header('Server', twork.SERVER_INFO)
 
@@ -53,6 +66,9 @@ class BaseHandler(RequestHandler):
         g_logger.debug('connection close.')
 
     def on_finish(self):
+        if not hasattr(self, '_mcq_error'):
+            self.application._requests -= 1
+
         self.application.update_handler_st(self.ST_ITEM,
                 self.request.method, self.request.request_time())
 

@@ -36,8 +36,6 @@ from tornado.httpclient import AsyncHTTPClient
 from tornado import gen
 
 from util import g_logger
-from util import HttpUtil
-from util import decorator as util_decorator
 
 from base import BaseHandler 
 from domain.object.error import ErrorCode as ECODE
@@ -45,7 +43,6 @@ from domain.object.error import BaseError
 
 class AsyncReadHandler(BaseHandler):
 
-    @util_decorator.validate_ip(_logger=g_logger)
     @tornado.web.asynchronous
     @gen.engine
     def get(self):

@@ -43,6 +43,7 @@ define("env", default="debug", help="service run environment")
 define("num_processes", default=-1,
         help="number of processes to fork, 0 for the number of cores", type=int)
 
+
 class TApplication(tornado.web.Application):
 
     @classmethod
@@ -59,7 +60,7 @@ class TApplication(tornado.web.Application):
                     _st['rt_avg'] = _st['rt'] / _st['requests']
         calcu()
         fd_all = len(IOLoop.instance()._handlers)
-        return {'fd': {'all': fd_all}, 'uptime': '%.3f' % (time.time() -
+        return {'fd': {'all': fd_all, 'requests': self._requests}, 'uptime': '%.3f' % (time.time() -
             self._start_time), 'handler': self._handler_st}
 
     def __init__(self):
@@ -78,6 +79,7 @@ class TApplication(tornado.web.Application):
 
         self._start_time = time.time()
         self._handler_st = {}
+        self._requests = 0
         
         tornado.web.Application.__init__(self, handlers, **app_settings)
 

@@ -38,7 +38,6 @@ from twork.domain.object.error import ErrorCode as ECODE
 from twork.domain.object.error import BaseError
 
 from twork.util import g_logger
-from twork.util import decorator as util_decorator
 
 from twork.web.action.base import BaseHandler
 
@@ -47,7 +46,6 @@ class HelloHandler(BaseHandler):
 
     ST_ITEM          = 'HELLO'
 
-    @util_decorator.time_it(g_logger)
     @tornado.web.asynchronous
     def get(self):
         try:
