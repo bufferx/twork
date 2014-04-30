@@ -31,6 +31,8 @@ define("app_version", default='',
         help = "The Application Version")
 define("config_file", default='%s/conf/twork.conf' % assembly.PROJECT_PATH,
         help = "Configuration File Specifying Options")
+define("log_config", default='%s/conf/log.conf' % assembly.PROJECT_PATH,
+        help = "Logging Config File Options")
 
 
 def _usage():

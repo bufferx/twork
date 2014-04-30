@@ -20,6 +20,7 @@
 
 import logging
 import logging.handlers
+import logging.config
 
 import os
 
@@ -39,7 +40,7 @@ define('log_root', default=assembly.PROJECT_PATH,
 
 
 # 创建记录器
-g_logger = logging.getLogger()
+g_logger = logging.getLogger('twork')
 
 def _mkdir(file_dir):
     real_path = os.path.realpath(file_dir)
@@ -77,7 +78,7 @@ def init_logger():
         logger.addHandler(_hand)
 
     def __init_biz_logger():
-        biz_logger = logging.getLogger('root.biz')
+        biz_logger = logging.getLogger('twork.biz')
 
         # 设置消息格式
         if options.v:
@@ -103,10 +104,15 @@ def init_logger():
 
         biz_logger.addHandler(_hand)
 
+    if os.path.exists(options.log_config):
+        logging.config.fileConfig(options.log_config)
+        return
+
     log_path = '%s/log/%d' % (options.log_root, options.port)
     _mkdir(log_path)
     __init_root_logger()
     __init_biz_logger()
+
 
 def main():
     ''' main function
