@@ -12,7 +12,6 @@ Requirements
 The following libraries are required
 
 * [tornado](http://github.com/facebook/tornado)
-* [bf4x-pyutil](https://github.com/bufferx/pyutil)
 
 Usage & Debug
 ------------

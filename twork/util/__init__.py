@@ -15,10 +15,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import bf4x_pyutil.decorator as decorator
-from bf4x_pyutil.common import CommonUtil
-from bf4x_pyutil.http import HttpUtil
-
 from twork.util.log import init_logger, g_logger
 
 def main():

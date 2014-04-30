@@ -51,7 +51,7 @@ class BaseHandler(RequestHandler):
         return self._version
 
     def prepare(self):
-        if self.application._requests >= options.mcq:
+        if options.mcq and self.application._requests >= options.mcq:
             g_logger.warning('Too Many Request: %d',
                     self.application._requests)
             self._mcq_error = True
