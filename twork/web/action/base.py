@@ -24,7 +24,6 @@ from tornado.options import options
 import twork
 
 from twork.util import g_logger
-from twork.util import decorator as util_decorator
 
 from twork.domain.object.error import ParameterEmptyError
 from twork.domain.object.error import ParameterTypeError
@@ -65,7 +64,6 @@ class BaseHandler(RequestHandler):
         if not self._finished:
             self.finish(data)
 
-    @util_decorator.time_it(_logger=g_logger)
     def _check_argument(self, parameter_name,
             default_value=None, expect_types=()):
         v = self.get_argument(parameter_name, default_value)

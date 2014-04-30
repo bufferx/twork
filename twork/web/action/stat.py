@@ -29,7 +29,7 @@ from twork.web.action.base import BaseHandler
 
 class StatHandler(BaseHandler):
 
-    ST_ITEM          = 'STAT'
+    ST_ITEM          = 'STATS'
 
     def get(self):
         if __debug__:
