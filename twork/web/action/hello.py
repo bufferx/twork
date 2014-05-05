@@ -34,10 +34,10 @@ import tornado.web
 from tornado.web import HTTPError
 from tornado.httpclient import AsyncHTTPClient
 
-from twork.domain.object.error import ErrorCode as ECODE
-from twork.domain.object.error import BaseError
+from twork.errors import ErrorCode as ECODE
+from twork.errors import BaseError
 
-from twork.util import g_logger
+from twork.utils import g_logger
 
 from twork.web.action.base import BaseHandler
 

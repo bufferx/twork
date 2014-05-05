@@ -24,11 +24,11 @@ from tornado.options import define, options
 
 import twork
 
-from twork.util import g_logger
+from twork.utils import g_logger
 
-from twork.domain.object.error import ParameterEmptyError
-from twork.domain.object.error import ParameterTypeError
-from twork.domain.object.common import USER_AGENT
+from twork.errors import ParameterEmptyError
+from twork.errors import ParameterTypeError
+from twork.consts import USER_AGENT
 
 define("mcq", default=0, help = "Max Concurrency reQuests")
 

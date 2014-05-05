@@ -30,7 +30,7 @@ import tornado.web
 
 from twork.web import action
 from twork.web import assembly
-from twork.util import g_logger
+from twork.utils import g_logger
 from twork.timer.common_timer import CommonTimer
 
 define("bind_ip", default='0.0.0.0',

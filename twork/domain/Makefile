@@ -1,9 +1,7 @@
 all:
-	@echo 'do nothing'
+	@echo "do nothing"
 
-.PHONY: clean
-
+.PHONY : clean
 clean:
-	cd ./entity && make clean
-	cd ./object && make clean
+	rm -f *.pyc
 	rm -f *.pyo

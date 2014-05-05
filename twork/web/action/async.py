@@ -38,8 +38,8 @@ from tornado import gen
 from util import g_logger
 
 from base import BaseHandler 
-from domain.object.error import ErrorCode as ECODE
-from domain.object.error import BaseError
+from errors import ErrorCode as ECODE
+from errors import BaseError
 
 class AsyncReadHandler(BaseHandler):
 

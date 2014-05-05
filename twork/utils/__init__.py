@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2012 Zhang ZY<http://idupx.blogspot.com/> 
@@ -14,12 +15,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''DB Class
-'''
+from twork.utils.log import init_logger, g_logger
 
-class DB(object):
-    def connect(self):
-        raise NotImplementedError()
+def main():
+    ''' main function
+    '''
+    pass
 
-    def close(self):
-        raise NotImplementedError()
+if __name__ == '__main__':
+    main()

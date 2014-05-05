@@ -21,7 +21,7 @@ import time
 from tornado.ioloop import PeriodicCallback
 from tornado.options import define, options
 
-from twork.util import g_logger
+from twork.utils import g_logger
 
 define("timer_interval", default = 30,
         help = "Timer Interval, TimeUnit: seconds", type = int)

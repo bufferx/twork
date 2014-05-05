@@ -28,7 +28,7 @@ from tornado.options import options
 import assembly
 
 from twork.options import init_options
-from twork.util import init_logger, g_logger
+from twork.utils import init_logger, g_logger
 from twork.web.server import HTTPServer
 
 
