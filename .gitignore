@@ -1,5 +1,4 @@
-*.pyc
-*.pyo
+*.py[cod]
 *.log
 tags
 tmp/
