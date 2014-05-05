@@ -25,7 +25,7 @@ CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..'))
 
 if PROJECT_PATH not in sys.path:
-    sys.path.append(PROJECT_PATH)
+    sys.path.insert(0, PROJECT_PATH)
 
 def main():
     print 'CURRENT_PATH:', CURRENT_PATH
