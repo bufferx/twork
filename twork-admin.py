@@ -44,7 +44,7 @@ define('prefix', default='~/workspace',
 define('project', default='', help='project name, instead of twork')
 
 ORI_PROJECT = 'twork'
-ROOT_FILES  = ('.gitignore', 'AUTHORS', 'LICENSE', 'README.md', 'setup.py')
+ROOT_FILES  = ('.gitignore', 'AUTHORS', 'LICENSE', 'Makefile', 'setup.py')
 
 
 def make_clean(src_path):
@@ -56,14 +56,28 @@ def make_clean(src_path):
     except OSError as e:
         print 'COMMAND[make clean] ERROR: %s' % e
 
-def make_git_repo(dst_path, project_name):
-    os.chdir(os.path.join(dst_path, project_name))
+def make_git_repo(dst_path):
+    os.chdir(os.path.join(dst_path, options.project))
     args = shlex.split('git init')
     try:
         p = subprocess.Popen(args)
         p.wait()
     except OSError as e:
         print 'COMMAND[git init] ERROR: %s' % e
+
+def make_README(dst_path):
+    content = \
+'''
+%s
+==========
+
+%s is a neTwork server framework based on %s
+''' % (options.project, options.project, ORI_PROJECT)
+    
+    dst_path = os.path.join(dst_path, options.project)
+
+    with open('%s/README.md' % dst_path, 'w') as f:
+        f.write(content.lstrip())
 
 def main():
     options.parse_command_line()
@@ -73,16 +87,17 @@ def main():
 
     project_name = options.project
     src_path = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
-        os.pardir,os.pardir))
+        os.pardir))
     dst_path = os.path.expanduser(options.prefix)
 
     make_clean(src_path)
 
-    shutil.copytree(os.path.join(src_path,ORI_PROJECT),
-            os.path.join(dst_path,project_name,project_name))
+    shutil.copytree(os.path.join(src_path, ORI_PROJECT),
+            os.path.join(dst_path, project_name, project_name))
+
     for file_name in ROOT_FILES:
-        shutil.copyfile(os.path.join(src_path,file_name),
-                os.path.join(dst_path,project_name,file_name))
+        shutil.copyfile(os.path.join(src_path, file_name),
+                os.path.join(dst_path, project_name, file_name))
 
     for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
         for name in files:
@@ -92,7 +107,7 @@ def main():
                 os.rename(os.path.join(root, old_name), 
                         os.path.join(root, name))
 
-            if re.match(r'.+[py|md]$|'+project_name, name):
+            if re.match(r'.+[py|md|Makefile]$|'+project_name, name):
                 with open(os.path.join(root,name),"r+") as f:
                     d = f.read()
                     d = d.replace(ORI_PROJECT, project_name)
@@ -105,7 +120,8 @@ def main():
                     f.seek(0,0)
                     f.write(d)
 
-    make_git_repo(dst_path, project_name)
+    make_README(dst_path)
+    make_git_repo(dst_path)
 
 if __name__ == '__main__':
     main()
