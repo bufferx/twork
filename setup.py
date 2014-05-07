@@ -45,15 +45,13 @@ kwargs = {}
 major, minor = sys.version_info[:2]
 python_26 = (major > 2 or (major == 2 and minor >= 6))
 
-version = twork.version
-
 if major >= 3:
     import setuptools  # setuptools is required for use_2to3
     kwargs["use_2to3"] = True
 
 distutils.core.setup(
     name="twork",
-    version=version,
+    version=twork.version,
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
@@ -63,11 +61,13 @@ distutils.core.setup(
     package_data = {
         "twork": ["web/static/favicon.ico"],
     },
-    scripts=["script/killall.sh", "script/logcut.sh", "script/reopenlog.sh",],
+    scripts=["script/cut_twork_log.sh", "script/kill_tworkd.sh",
+        "script/reopen_twork_log.sh",],
     entry_points = {
      'console_scripts': [
          'tworkd = twork.tworkd:main',
          ],
       },
+    install_requires=['tornado==2.4.1'],
     **kwargs
 )

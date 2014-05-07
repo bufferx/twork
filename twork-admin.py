@@ -95,30 +95,32 @@ def main():
     shutil.copytree(os.path.join(src_path, ORI_PROJECT),
             os.path.join(dst_path, project_name, project_name))
 
+    shutil.copytree(os.path.join(src_path, 'script'),
+            os.path.join(dst_path, project_name, 'script'))
+
     for file_name in ROOT_FILES:
         shutil.copyfile(os.path.join(src_path, file_name),
                 os.path.join(dst_path, project_name, file_name))
 
-    for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
-        for name in files:
-            if name.find(ORI_PROJECT) != -1:
-                old_name = name
-                name = name.replace(ORI_PROJECT, project_name)
-                os.rename(os.path.join(root, old_name), 
-                        os.path.join(root, name))
+    for top_path in (os.path.join(dst_path, project_name), \
+        os.path.join(dst_path, project_name, 'script')):
+        for root, dirs, files in os.walk(top_path):
+            for name in files:
+                if name.find(ORI_PROJECT) != -1:
+                    old_name = name
+                    name = name.replace(ORI_PROJECT, project_name)
+                    os.rename(os.path.join(root, old_name),
+                            os.path.join(root, name))
 
-            if re.match(r'.+[py|md|Makefile]$|'+project_name, name):
-                with open(os.path.join(root,name),"r+") as f:
-                    d = f.read()
-                    d = d.replace(ORI_PROJECT, project_name)
-                    d = d.replace(ORI_PROJECT.upper(), project_name.upper())
-                    d = d.replace('based on tornado',
-                            'based on %s' % ORI_PROJECT)
-                    d = d.replace('bufferx/%s' % project_name,
-                            'bufferx/%s' % ORI_PROJECT)
-                    f.truncate(0)
-                    f.seek(0,0)
-                    f.write(d)
+                if re.match(r'.+[py|md|sh|Makefile]$|'+project_name, name):
+                    with open(os.path.join(root,name),"r+") as f:
+                        d = f.read()
+                        #d = d.replace('grep %sd' % ORI_PROJECT, 'grep %sd' % project_name)
+                        d = d.replace(ORI_PROJECT, project_name)
+                        d = d.replace(ORI_PROJECT.upper(), project_name.upper())
+                        f.truncate(0)
+                        f.seek(0,0)
+                        f.write(d)
 
     make_README(dst_path)
     make_git_repo(dst_path)
