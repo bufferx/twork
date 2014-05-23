@@ -83,6 +83,7 @@ class BaseHandler(RequestHandler):
     def _check_argument(self, parameter_name,
             default_value=None, expect_types=()):
         v = self.get_argument(parameter_name, default_value)
+
         if v is None:
             raise ParameterEmptyError(parameter_name)
 

@@ -14,8 +14,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''Define Error 
+'''Error Defining 
 '''
+
 
 class ErrorCode(object):
     DEFAULT = 0xff
@@ -34,6 +35,7 @@ class ErrorCode(object):
     # others
     TOO_MANY_REQUEST = 400
 
+
 class ErrorMessage(object):
     SUCCESS = 'SUCCESS'
     DEFAULT = 'ERROR'
@@ -43,7 +45,7 @@ class ErrorMessage(object):
     DB_TOOMANYCONNECTIONS = 'ERROR_DB_TOOMANYCONNECTIONS'
     DB_DATABASEERROR = 'DB_DATABASEERROR'
     PARAMS = 'ERROR_PARAMS'
-    pass
+
 
 class BaseError(Exception):
     def __init__(self, msg='Default'):
@@ -52,7 +54,7 @@ class BaseError(Exception):
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class TooManyRequest(BaseError):
     def __init__(self, msg=''):
@@ -62,62 +64,56 @@ class TooManyRequest(BaseError):
     def __str__(self):
         return self.e_msg
 
+
 class ParameterError(BaseError):
     def __init__(self, msg=''):
         self.e_code = ErrorCode.PARAMETERS
         self.e_msg = 'Invalid Parameter: %s' % msg
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class ParameterEmptyError(BaseError):
     def __init__(self, parameter_name=''):
         self.e_code = ErrorCode.PARAMETERS
         self.e_msg = 'Parameter[%s] Can\'t Be NULL' % parameter_name.upper()
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class ParameterTypeError(BaseError):
     def __init__(self, parameter_name=''):
         self.e_code = ErrorCode.PARAMETERS
         self.e_msg = 'Parameter[%s]\'type Is Invalid' % parameter_name.upper()
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class ParameterDateError(ParameterError):
     def __init__(self, msg=''):
         self.e_code = ErrorCode.PARAMETERS_DATE 
         self.e_msg = 'Invalid Date: %s' % msg
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class DBError(BaseError):
     def __init__(self, msg=''):
         self.e_code = ErrorCode.DB_ERROR 
         self.e_msg = 'DB Error: %s' % msg
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
+
 
 class DBEmpty(DBError):
     def __init__(self, msg=''):
         self.e_code = ErrorCode.DB_EMPTY 
         self.e_msg = 'DB Empty: %s' % msg
-        pass
 
     def __str__(self):
         return self.e_msg 
-    pass
