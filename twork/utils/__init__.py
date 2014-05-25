@@ -16,11 +16,4 @@
 # under the License.
 
 from twork.utils.log import init_logger, g_logger
-
-def main():
-    ''' main function
-    '''
-    pass
-
-if __name__ == '__main__':
-    main()
+import common

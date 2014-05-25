@@ -89,4 +89,5 @@ class BaseHandler(RequestHandler):
 
         if expect_types and not isinstance(v, expect_types): 
             raise ParameterTypeError(parameter_name)
+
         return v
