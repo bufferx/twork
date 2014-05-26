@@ -30,7 +30,7 @@ from twork.errors import ParameterEmptyError
 from twork.errors import ParameterTypeError
 from twork.consts import USER_AGENT
 
-define("mcq", default=0, help = "Max Concurrency reQuests")
+define("max_requests", default=0, help="Max Concurrency Requests")
 
 
 class BaseHandler(RequestHandler):
@@ -41,21 +41,20 @@ class BaseHandler(RequestHandler):
         self.VERSION = version
         self.USER_AGENT = '%s_%s' % (USER_AGENT, options.env.upper())
 
-        if __debug__:
-            g_logger.debug(self.request)
-
     @property
     def version(self):
         if not hasattr(self, '_version'):
             self._version = 'V%s' % ('.'.join(['%d' % i for i in self.VERSION]))
+
         return self._version
 
     def prepare(self):
-        if options.mcq and self.application._requests >= options.mcq:
+        if options.max_requests and \
+            self.application._requests >= options.max_requests:
             g_logger.warning('Too Many Request: %d',
-                    self.application._requests)
-            self._mcq_error = True
-            raise HTTPError(403)
+                             self.application._requests)
+            self._max_requests = True
+            raise HTTPError(429)
 
         self.application._requests += 1
 
@@ -66,7 +65,7 @@ class BaseHandler(RequestHandler):
         g_logger.debug('connection close.')
 
     def on_finish(self):
-        if not hasattr(self, '_mcq_error'):
+        if not hasattr(self, '_max_requests'):
             self.application._requests -= 1
 
         self.application.update_handler_st(self.ST_ITEM,
