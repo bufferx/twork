@@ -24,7 +24,7 @@ from tornado.options import define, options
 
 import twork
 
-from twork.utils import g_logger
+from twork.utils import gen_logger, access_logger
 
 from twork.errors import ParameterEmptyError
 from twork.errors import ParameterTypeError
@@ -51,7 +51,7 @@ class BaseHandler(RequestHandler):
     def prepare(self):
         if options.max_requests and \
             self.application._requests >= options.max_requests:
-            g_logger.warning('Too Many Request: %d',
+            gen_logger.warning('Too Many Request: %d',
                              self.application._requests)
             self._max_requests = True
             raise HTTPError(429)
@@ -62,7 +62,7 @@ class BaseHandler(RequestHandler):
         self.set_header('Server', twork.SERVER_INFO)
 
     def on_connection_close(self):
-        g_logger.debug('connection close.')
+        gen_logger.debug('connection close.')
 
     def on_finish(self):
         if not hasattr(self, '_max_requests'):
@@ -74,6 +74,13 @@ class BaseHandler(RequestHandler):
     def finish(self, chunk=None):
         if not self.request.connection.stream.closed():
             RequestHandler.finish(self, chunk)
+            access_logger.info('',
+                               extra={'version': 'V' + twork.version,
+                                      'status': self.get_status(),
+                                      'method': self.request.method,
+                                      'remoteip': self.request.remote_ip,
+                                      'uri': self.request.uri,
+                                      'rt': '%.6f' % self.request.request_time()})
 
     def api_response(self, data):
         if not self._finished:

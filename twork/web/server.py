@@ -30,7 +30,7 @@ import tornado.web
 
 from twork.web import action
 from twork.web import assembly
-from twork.utils import g_logger
+from twork.utils import gen_logger
 from twork.timer.common_timer import CommonTimer
 
 define("bind_ip", default='0.0.0.0',
@@ -86,7 +86,7 @@ class TApplication(tornado.web.Application):
         self.timer_callback()
 
     def timer_callback(self):
-        g_logger.debug('WEB_APPLICATION: %d', id(self))
+        gen_logger.debug('WEB_APPLICATION: %d', id(self))
 
     def update_handler_st(self, st_item, method, request_time):
         if st_item not in self._handler_st:

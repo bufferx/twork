@@ -28,7 +28,7 @@ from tornado.options import options
 import assembly
 
 from twork.options import init_options
-from twork.utils import init_logger, g_logger
+from twork.utils import setup_log, gen_logger
 from twork.web.server import HTTPServer
 
 
@@ -40,15 +40,15 @@ def _quit():
     tornado.ioloop.IOLoop.instance().stop()
     tornado.ioloop.IOLoop.instance().close(all_fds=True)
 
-    g_logger.info('STOP TORNADO SERVER ...')
+    gen_logger.info('STOP TORNADO SERVER ...')
 
 def _handle_signal(sig, frame):
-    g_logger.warning('Catch SIG: %d, Gently Quit', sig)
+    gen_logger.warning('Catch SIG: %d, Gently Quit', sig)
     _quit()
 
 def _reopen_log(sig, frame):
-    g_logger.warning('Catch SIG: %d, ReOpen Log', sig)
-    init_logger()
+    gen_logger.warning('Catch SIG: %d, ReOpen Log', sig)
+    setup_log()
 
 def _setup_signal():
     # 忽略Broken Pipe信号
@@ -65,29 +65,29 @@ def _setup_signal():
 def _log_options():
     if tornado.version_info < (3, 0, 0, 0):
         for key, option in options.iteritems():
-            g_logger.info('Options: (%s, %s)', key, option.value())
+            gen_logger.info('Options: (%s, %s)', key, option.value())
     else:
         for key, option in options.items():
-            g_logger.info('Options: (%s, %s)', key, option)
+            gen_logger.info('Options: (%s, %s)', key, option)
 
 def main():
     ''' main function
     '''
     init_options()
-    init_logger()
+    setup_log()
 
     _setup_signal()
 
     _log_options()
 
-    g_logger.info('START TORNADO SERVER ...')
+    gen_logger.info('START TORNADO SERVER ...')
 
     try:
         HTTPServer.instance().start()
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:
-        g_logger.error('UnCaught Exception: %s', e, exc_info=True)
+        gen_logger.error('UnCaught Exception: %s', e, exc_info=True)
     finally:
         _quit()
 

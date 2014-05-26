@@ -22,7 +22,7 @@ from twork.errors import ErrorCode as ECODE
 from twork.errors import ErrorMessage as EMSG
 from twork.errors import BaseError
 
-from twork.utils import g_logger
+from twork.utils import gen_logger
 
 from twork.web.action.base import BaseHandler
 
@@ -33,7 +33,7 @@ class StatHandler(BaseHandler):
 
     def get(self):
         if __debug__:
-            g_logger.debug(self.request.body)
+            gen_logger.debug(self.request.body)
 
         result = {'code': ECODE.SUCCESS, 'msg': EMSG.SUCCESS}
         result['data'] = {}
@@ -41,11 +41,11 @@ class StatHandler(BaseHandler):
         try:
             result['data'] = self.application.stat_info
         except BaseError, e:
-            g_logger.error(e, exc_info=True if __debug__ else False)
+            gen_logger.error(e, exc_info=True if __debug__ else False)
             result['code'] = e.e_code
             result['msg']  = e.e_msg
         except Exception, e:
-            g_logger.error(e, exc_info=True if __debug__ else False)
+            gen_logger.error(e, exc_info=True if __debug__ else False)
             result['code'] = ECODE.DEFAULT
             result['msg']  = EMSG.DEFAULT
         finally:

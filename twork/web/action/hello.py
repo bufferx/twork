@@ -37,7 +37,7 @@ from tornado.httpclient import AsyncHTTPClient
 from twork.errors import ErrorCode as ECODE
 from twork.errors import BaseError
 
-from twork.utils import g_logger
+from twork.utils import gen_logger
 
 from twork.web.action.base import BaseHandler
 
@@ -58,13 +58,13 @@ class HelloHandler(BaseHandler):
             self.async_fetch()
 
         except HTTPError, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
         except BaseError, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             return self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
         except Exception, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             return self.api_response({'e_code':ECODE.DEFAULT, 'e_msg':
                 'Unknown'})
 
@@ -79,7 +79,7 @@ class HelloHandler(BaseHandler):
         http_client.fetch(request, self.__handle_async_request)
 
     def __handle_async_request(self, response):
-        #g_logger.debug('CURL_ERRNO\t%d', response.error.errno)
-        g_logger.debug('STACK_CONTEXT\tself.name=%s',  self.name)
-        g_logger.debug('RESPONSE_ERROR\t%s',  response.error)
-        g_logger.debug('RESPONSE\t%s',  response)
+        #gen_logger.debug('CURL_ERRNO\t%d', response.error.errno)
+        gen_logger.debug('STACK_CONTEXT\tself.name=%s',  self.name)
+        gen_logger.debug('RESPONSE_ERROR\t%s',  response.error)
+        gen_logger.debug('RESPONSE\t%s',  response)

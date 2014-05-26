@@ -35,7 +35,7 @@ from tornado.web import HTTPError
 from tornado.httpclient import AsyncHTTPClient
 from tornado import gen
 
-from util import g_logger
+from util import gen_logger
 
 from base import BaseHandler 
 from errors import ErrorCode as ECODE
@@ -68,23 +68,23 @@ class AsyncReadHandler(BaseHandler):
                 self.finish({'e_code':ECODE.HTTP, 'e_msg': 'SUCCESS'})
             pass
         except HTTPError, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
             raise StopIteration
         except BaseError, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
             raise StopIteration
         except Exception, e:
-            g_logger.error(e, exc_info=True)
+            gen_logger.error(e, exc_info=True)
             self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
             raise StopIteration
 
     def __handle_async_request(self, response):
         if response is None:
             return None
-        #g_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
-        g_logger.debug('RESPONSE_ERROR\t%s' % response.error)
-        g_logger.debug('RESPONSE\t%s' % response)
+        #gen_logger.debug('STACK_CONTEXT\tself.name=%s' % self.name)
+        gen_logger.debug('RESPONSE_ERROR\t%s' % response.error)
+        gen_logger.debug('RESPONSE\t%s' % response)
 
         return response.body

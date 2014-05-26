@@ -40,7 +40,8 @@ define('log_root', default=assembly.PROJECT_PATH,
 
 
 # 创建记录器
-g_logger = logging.getLogger('twork')
+gen_logger = logging.getLogger('twork.general')
+access_logger = logging.getLogger('twork.access')
 
 def _mkdir(file_dir):
     real_path = os.path.realpath(file_dir)
@@ -48,7 +49,7 @@ def _mkdir(file_dir):
         os.makedirs(real_path)
         pass
 
-def init_logger():
+def setup_log():
     def __init_root_logger():
         logger = logging.getLogger()
 

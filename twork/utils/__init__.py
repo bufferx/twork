@@ -15,5 +15,5 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from twork.utils.log import init_logger, g_logger
+from twork.utils.log import setup_log, gen_logger, access_logger
 import common
