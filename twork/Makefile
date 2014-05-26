@@ -4,7 +4,6 @@ all:
 .PHONY : clean
 clean:
 	cd ./domain/ && make clean
-	cd ./test/ && make clean
 	cd ./timer/ && make clean
 	cd ./utils/ && make clean
 	cd ./web/ && make clean

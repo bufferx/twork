@@ -4,6 +4,7 @@ all:
 .PHONY : clean
 clean:
 	cd ./twork/ && make clean
+	cd ./test/ && make clean
 	rm -fr twork.egg-info build dist
 
 build: clean
