@@ -15,8 +15,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''
-'''
+"""Stats Interface
+"""
 
 from twork.errors import ErrorCode as ECODE
 from twork.errors import ErrorMessage as EMSG
@@ -28,23 +28,18 @@ from twork.web.action.base import BaseHandler
 
 
 class StatHandler(BaseHandler):
+    """Stats Handler
+    """
 
     ST_ITEM          = 'STATS'
 
     def get(self):
-        if __debug__:
-            gen_logger.debug(self.request.body)
-
         result = {'code': ECODE.SUCCESS, 'msg': EMSG.SUCCESS}
         result['data'] = {}
 
         try:
-            result['data'] = self.application.stat_info
-        except BaseError, e:
-            gen_logger.error(e, exc_info=True if __debug__ else False)
-            result['code'] = e.e_code
-            result['msg']  = e.e_msg
-        except Exception, e:
+            result['datas'] = self.application.stat_info
+        except Exception as e:
             gen_logger.error(e, exc_info=True if __debug__ else False)
             result['code'] = ECODE.DEFAULT
             result['msg']  = EMSG.DEFAULT

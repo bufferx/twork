@@ -61,9 +61,6 @@ class BaseHandler(RequestHandler):
     def set_default_headers(self):
         self.set_header('Server', twork.SERVER_INFO)
 
-    def on_connection_close(self):
-        gen_logger.debug('connection close.')
-
     def on_finish(self):
         if not hasattr(self, '_max_requests'):
             self.application._requests -= 1
