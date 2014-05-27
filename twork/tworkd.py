@@ -32,6 +32,7 @@ import assembly
 from twork.options import init_options
 from twork.utils import setup_log, gen_logger
 from twork.web.server import HTTPServer
+from twork.timer.common_timer import CommonTimer
 
 
 define("setup_module", default=None,
@@ -42,6 +43,7 @@ def _quit():
     if not tornado.ioloop.IOLoop.instance().running():
         return
 
+    CommonTimer().stop()
     HTTPServer().stop()
     tornado.ioloop.IOLoop.instance().stop()
     tornado.ioloop.IOLoop.instance().close(all_fds=True)
@@ -82,11 +84,16 @@ def main():
     init_options()
 
     WebApplication = None
+    timer_callback = None
     if options.setup_module is not None:
         try:
             _module = import_object(options.setup_module)
             _module.setup()
             WebApplication = _module.WebApplication
+            timer_callback = _module.timer_callback
+
+            if options.timer_start:
+                CommonTimer().start(timer_callback)
         except (ImportError, AttributeError) as e:
             gen_logger.error(e, exc_info=True)
 

@@ -32,7 +32,6 @@ from twork.web import action
 from twork.web import assembly
 from twork.utils import gen_logger
 from twork.utils import common as common_util
-from twork.timer.common_timer import CommonTimer
 
 define("bind_address", default='0.0.0.0:8000,',
         help="run server on a specific address")
@@ -41,8 +40,6 @@ define("backlog", default=128,
 define("env", default="debug", help="service run environment")
 define("num_processes", default=-1,
         help="number of processes to fork, 0 for the number of cores", type=int)
-define("timer_start", default=False,
-        help = "whether Start Time Default")
 
 
 class TApplication(tornado.web.Application):
@@ -87,12 +84,6 @@ class TApplication(tornado.web.Application):
             handlers.extend(_handlers)
 
         tornado.web.Application.__init__(self, handlers, **app_settings)
-
-        if options.timer_start:
-            self.timer_callback()
-
-    def timer_callback(self):
-        gen_logger.debug('WEB_APPLICATION: %d', id(self))
 
     def update_handler_st(self, st_item, method, request_time):
         if st_item not in self._handler_st:
@@ -156,11 +147,6 @@ class HTTPServer(object):
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
 
-        if options.timer_start:
-            CommonTimer.instance().start(TApplication.instance().timer_callback)
-
     def stop(self):
-        CommonTimer.instance().stop()
-
         if hasattr(self, 'http_server'):
             self.http_server.stop()

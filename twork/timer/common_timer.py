@@ -22,25 +22,27 @@ from tornado.ioloop import PeriodicCallback
 from tornado.options import define, options
 
 from twork.utils import gen_logger
+from twork.utils import common as common_util
 
+define("timer_start", default=False,
+        help = "whether Start Timer Default")
 define("timer_interval", default = 30,
         help = "Timer Interval, TimeUnit: seconds", type = int)
 
 
+@common_util.singleton
 class CommonTimer(object):
     '''Common Timer'''
-
-    @classmethod
-    def instance(cls):
-        if not hasattr(cls, '_instance'):
-            cls._instance = cls()
-        return cls._instance
 
     def __init__(self):
         self.__scheduler = None
 
-    def start(self, callback):
+    def start(self, callback=None):
         assert options.timer_interval > 0
+
+        if callback is None:
+            gen_logger.warning('timer callback is None')
+            return
 
         if self.__scheduler is not None:
             return
