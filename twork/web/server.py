@@ -42,6 +42,8 @@ define("backlog", default=128,
 define("env", default="debug", help="service run environment")
 define("num_processes", default=-1,
         help="number of processes to fork, 0 for the number of cores", type=int)
+define("timer_start", default=False,
+        help = "Whether Start Time Default")
 
 
 class TApplication(tornado.web.Application):
@@ -59,31 +61,36 @@ class TApplication(tornado.web.Application):
                 for method, _st in st.iteritems():
                     _st['rt_avg'] = _st['rt'] / _st['requests']
         calcu()
+
         fd_all = len(IOLoop.instance()._handlers)
+
         return {'fd': {'all': fd_all, 'requests': self._requests}, 'uptime': '%.3f' % (time.time() -
             self._start_time), 'handler': self._handler_st}
 
-    def __init__(self):
-        self.init_app_info()
-
-        debug = options.env == "debug"
-        app_settings = { 
-                'gzip': 'on',
-                'static_path': assembly.STATIC_PATH,
-                'debug':debug,
-                }
-        handlers = [
-            (r'^/v1.0/twork/stats$', action.StatHandler,
-                {'version': (1, 0)}),
-        ]
-
+    def __init__(self, handlers=None, **kwargs):
         self._start_time = time.time()
         self._handler_st = {}
         self._requests = 0
-        
+
+        debug = options.env.lower() == 'debug'
+        app_settings = {
+                'static_path': assembly.STATIC_PATH,
+                'debug':debug,
+                }
+
+        _handlers = [
+            (r'^/v1.0/twork/stats$', action.StatHandler,
+                {'version': (1, 0)}),
+        ]
+        if handlers is None:
+            handlers = _handlers
+        else:
+            handlers.extend(_handlers)
+
         tornado.web.Application.__init__(self, handlers, **app_settings)
 
-        self.timer_callback()
+        if options.timer_start:
+            self.timer_callback()
 
     def timer_callback(self):
         gen_logger.debug('WEB_APPLICATION: %d', id(self))
@@ -138,11 +145,13 @@ class HTTPServer(object):
         if options.num_processes >= 0:
             process.fork_processes(options.num_processes)
 
-        CommonTimer.instance().start(TApplication.instance().timer_callback)
+        if options.timer_start:
+            CommonTimer.instance().start(TApplication.instance().timer_callback)
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
                     request_callback=TApplication.instance())
+
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
 
