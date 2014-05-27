@@ -46,5 +46,5 @@ def init_options():
     if os.path.exists(options.config_file):
         tornado.options.parse_config_file(options.config_file)
 
-    if not options.log_root or not options.port:
+    if not options.log_root:
         _usage()

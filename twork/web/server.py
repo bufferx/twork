@@ -33,17 +33,15 @@ from twork.web import assembly
 from twork.utils import gen_logger
 from twork.timer.common_timer import CommonTimer
 
-define("bind_ip", default='0.0.0.0',
-        help="run server on a specific ip")
-define("port", default=8000,
-        help="run server on a specific port", type=int)
+define("bind_address", default='0.0.0.0:8000,',
+        help="run server on a specific address")
 define("backlog", default=128,
         help="the same meaning as for socket.listen", type=int)
 define("env", default="debug", help="service run environment")
 define("num_processes", default=-1,
         help="number of processes to fork, 0 for the number of cores", type=int)
 define("timer_start", default=False,
-        help = "Whether Start Time Default")
+        help = "whether Start Time Default")
 
 
 class TApplication(tornado.web.Application):
@@ -136,8 +134,13 @@ class HTTPServer(object):
 
     def start(self):
         sockets_list = []
-        for bind_ip in options.bind_ip.split(','):
-            sockets = tornado.netutil.bind_sockets(options.port,
+        for address in options.bind_address.split(','):
+            if not address:
+                break
+
+            bind_ip, bind_port = address.split(':')
+            sockets = tornado.netutil.bind_sockets(
+                    bind_port,
                     address=bind_ip,
                     backlog=options.backlog)
             sockets_list.append(sockets)
@@ -145,15 +148,15 @@ class HTTPServer(object):
         if options.num_processes >= 0:
             process.fork_processes(options.num_processes)
 
-        if options.timer_start:
-            CommonTimer.instance().start(TApplication.instance().timer_callback)
-
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
                     request_callback=TApplication.instance())
 
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
+
+        if options.timer_start:
+            CommonTimer.instance().start(TApplication.instance().timer_callback)
 
     def stop(self):
         CommonTimer.instance().stop()

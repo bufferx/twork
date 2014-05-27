@@ -109,7 +109,7 @@ def setup_log():
         logging.config.fileConfig(options.log_config)
         return
 
-    log_path = '%s/log/%d' % (options.log_root, options.port)
+    log_path = '%s/log' % (options.log_root)
     _mkdir(log_path)
     __init_root_logger()
     __init_biz_logger()
