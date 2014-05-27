@@ -15,21 +15,27 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-''' tornado server
-'''
+"""tworkd
+"""
 
 import tornado
 
 import sys
 import signal
 
+from tornado.options import define
 from tornado.options import options
+from tornado.util import import_object
 
 import assembly
 
 from twork.options import init_options
 from twork.utils import setup_log, gen_logger
 from twork.web.server import HTTPServer
+
+
+define("setup_module", default=None,
+        help="setup module is injected to twork.tworkd when main function execute")
 
 
 def _quit():
@@ -71,9 +77,19 @@ def _log_options():
             gen_logger.info('Options: (%s, %s)', key, option)
 
 def main():
-    ''' main function
-    '''
+    """main function
+    """
     init_options()
+
+    WebApplication = None
+    if options.setup_module is not None:
+        try:
+            _module = import_object(options.setup_module)
+            _module.setup()
+            WebApplication = _module.WebApplication
+        except (ImportError, AttributeError) as e:
+            gen_logger.error(e, exc_info=True)
+
     setup_log()
 
     _setup_signal()
