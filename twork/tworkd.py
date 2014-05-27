@@ -42,7 +42,7 @@ def _quit():
     if not tornado.ioloop.IOLoop.instance().running():
         return
 
-    HTTPServer.instance().stop()
+    HTTPServer().stop()
     tornado.ioloop.IOLoop.instance().stop()
     tornado.ioloop.IOLoop.instance().close(all_fds=True)
 
@@ -99,7 +99,8 @@ def main():
     gen_logger.info('START TORNADO SERVER ...')
 
     try:
-        HTTPServer.instance().start()
+        HTTPServer().start(request_callback=WebApplication() if WebApplication
+                else None)
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:

@@ -31,6 +31,7 @@ import tornado.web
 from twork.web import action
 from twork.web import assembly
 from twork.utils import gen_logger
+from twork.utils import common as common_util
 from twork.timer.common_timer import CommonTimer
 
 define("bind_address", default='0.0.0.0:8000,',
@@ -124,15 +125,15 @@ class TApplication(tornado.web.Application):
         with open(app_egg, 'r') as f:
             self.app_hash = md5(f.read()).hexdigest()
 
+
+@common_util.singleton
 class HTTPServer(object):
+    """Singleton, can't be inherited
+    """
+    def start(self, request_callback=None):
+        if request_callback is None:
+            request_callback = TApplication.instance()
 
-    @classmethod
-    def instance(cls):
-        if not hasattr(cls, '_instance'):
-            cls._instance = cls()
-        return cls._instance
-
-    def start(self):
         sockets_list = []
         for address in options.bind_address.split(','):
             if not address:
@@ -150,7 +151,7 @@ class HTTPServer(object):
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
-                    request_callback=TApplication.instance())
+                    request_callback=request_callback)
 
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
