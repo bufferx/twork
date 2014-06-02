@@ -20,7 +20,7 @@ import functools
 import logging
 import time
 
-logger = logging.getLogger('twork')
+gen_logger = logging.getLogger('twork.general')
 
 log_time = lambda f, t: 'Function[%s] Consume %.3fms' % (f, (time.time() - t) * 1000)
 
@@ -31,7 +31,7 @@ def time_it(func):
         start_time = time.time()
 
         r = func(*args, **kwargs)
-        logger.info('%s\t%s\t%s', args, kwargs,
+        gen_logger.info('%s\t%s\t%s', args, kwargs,
                 log_time(func.__name__, start_time),
                 extra={'version': 'v1.0'})
         return r
@@ -45,3 +45,13 @@ def singleton(cls, *args, **kw):
             instance[cls] = cls(*args, **kw)
         return instance[cls]
     return _singleton
+
+
+def define_process_title(proc_title='twork'):
+    """Define Custom Process Title
+    """
+    try:
+        import setproctitle
+        setproctitle.setproctitle(proc_title)
+    except ImportError as e:
+        gen_logger.error(e)

@@ -33,6 +33,7 @@ from twork.options import init_options
 from twork.utils import setup_log, gen_logger
 from twork.web.server import HTTPServer
 from twork.timer.common_timer import CommonTimer
+import twork.utils
 
 
 define("setup_module", default=None,
@@ -88,6 +89,10 @@ def main():
     if options.setup_module is not None:
         try:
             _module = import_object(options.setup_module)
+
+            twork.utils.common.define_process_title('twork:app#' +
+                    _module.APP_INFO.lower())
+
             _module.setup()
             WebApplication = _module.WebApplication
             timer_callback = _module.timer_callback

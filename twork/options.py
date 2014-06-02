@@ -26,7 +26,7 @@ from twork import assembly
 
 
 define("app_name", default='twork',
-        help = "Set Log Level")
+        help = "Application Name Base On Twork")
 define("app_version", default='',
         help = "The Application Version")
 define("config_file", default='%s/conf/twork.conf' % assembly.PROJECT_PATH,
