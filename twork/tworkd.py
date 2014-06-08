@@ -36,7 +36,7 @@ from twork.timer.common_timer import CommonTimer
 import twork.utils
 
 
-define("setup_module", default=None,
+define("injection_module", default=None,
         help="setup module is injected to twork.tworkd when main function execute")
 
 
@@ -84,23 +84,26 @@ def main():
     """
     init_options()
 
-    WebApplication = None
-    timer_callback = None
-    if options.setup_module is not None:
-        try:
-            _module = import_object(options.setup_module)
+    app_name = 'twork'
 
-            twork.utils.common.define_process_title('twork:app#' +
-                    _module.APP_INFO.lower())
+    web_handlers   = None
+    timer_callback = None
+    if options.injection_module is not None:
+        try:
+            _module = import_object(options.injection_module)
+
+            web_handlers = _module.HANDLERS
+            app_name = _module.APP_INFO.lower()
 
             _module.setup()
-            WebApplication = _module.WebApplication
             timer_callback = _module.timer_callback
 
             if options.timer_start:
                 CommonTimer().start(timer_callback)
         except (ImportError, AttributeError) as e:
             gen_logger.error(e, exc_info=True)
+
+    twork.utils.common.define_process_title('twork::' + app_name)
 
     setup_log()
 
@@ -111,8 +114,7 @@ def main():
     gen_logger.info('START TORNADO SERVER ...')
 
     try:
-        HTTPServer().start(request_callback=WebApplication() if WebApplication
-                else None)
+        HTTPServer().start(web_handlers)
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:

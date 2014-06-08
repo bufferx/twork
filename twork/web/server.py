@@ -34,7 +34,7 @@ from twork.utils import gen_logger
 from twork.utils import common as common_util
 
 define("bind_address", default='0.0.0.0:8000,',
-        help="run server on a specific address")
+        help="run http server on a specific address")
 define("backlog", default=128,
         help="the same meaning as for socket.listen", type=int)
 define("env", default="debug", help="service run environment")
@@ -42,13 +42,7 @@ define("num_processes", default=-1,
         help="number of processes to fork, 0 for the number of cores", type=int)
 
 
-class TApplication(tornado.web.Application):
-
-    @classmethod
-    def instance(cls):
-        if not hasattr(cls, '_instance'):
-            cls._instance = cls()
-        return cls._instance
+class _TApplication(tornado.web.Application):
 
     @property
     def stat_info(self):
@@ -63,7 +57,7 @@ class TApplication(tornado.web.Application):
         return {'fd': {'all': fd_all, 'requests': self._requests}, 'uptime': '%.3f' % (time.time() -
             self._start_time), 'handler': self._handler_st}
 
-    def __init__(self, handlers=None, **kwargs):
+    def __init__(self, handlers=None):
         self._start_time = time.time()
         self._handler_st = {}
         self._requests = 0
@@ -78,6 +72,7 @@ class TApplication(tornado.web.Application):
             (r'^/v1.0/twork/stats$', action.StatHandler,
                 {'version': (1, 0)}),
         ]
+
         if handlers is None:
             handlers = _handlers
         else:
@@ -121,10 +116,7 @@ class TApplication(tornado.web.Application):
 class HTTPServer(object):
     """Singleton, can't be inherited
     """
-    def start(self, request_callback=None):
-        if request_callback is None:
-            request_callback = TApplication.instance()
-
+    def start(self, handlers=None, **kwargs):
         sockets_list = []
         for address in options.bind_address.split(','):
             if not address:
@@ -142,7 +134,7 @@ class HTTPServer(object):
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
-                    request_callback=request_callback)
+                    request_callback=_TApplication(handlers))
 
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
