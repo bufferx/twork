@@ -33,8 +33,10 @@ from twork.web import assembly
 from twork.utils import gen_logger
 from twork.utils import common as common_util
 
-define("bind_address", default='0.0.0.0:8000,',
+define("bind_ip", default='127.0.0.1,',
         help="run http server on a specific address")
+define("port", default=8000,
+        help="run http server on a specific port")
 define("backlog", default=128,
         help="the same meaning as for socket.listen", type=int)
 define("env", default="debug", help="service run environment")
@@ -114,17 +116,16 @@ class _TApplication(tornado.web.Application):
 
 @common_util.singleton
 class HTTPServer(object):
-    """Singleton, can't be inherited
+    """Decorator Singleton, can't be inherited
     """
     def start(self, handlers=None, **kwargs):
         sockets_list = []
-        for address in options.bind_address.split(','):
-            if not address:
+        for bind_ip in options.bind_ip.split(','):
+            if not bind_ip:
                 break
 
-            bind_ip, bind_port = address.split(':')
             sockets = tornado.netutil.bind_sockets(
-                    bind_port,
+                    options.port,
                     address=bind_ip,
                     backlog=options.backlog)
             sockets_list.append(sockets)
