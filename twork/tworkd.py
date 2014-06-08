@@ -29,7 +29,7 @@ from tornado.util import import_object
 
 import assembly
 
-from twork.options import init_options
+from twork.options import setup_options
 from twork.utils import setup_log, gen_logger
 from twork.web.server import HTTPServer
 from twork.timer.common_timer import CommonTimer
@@ -82,7 +82,7 @@ def _log_options():
 def main():
     """main function
     """
-    init_options()
+    setup_options()
 
     app_name = 'twork'
 

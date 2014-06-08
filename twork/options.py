@@ -25,10 +25,6 @@ from tornado.options import define, options
 from twork import assembly
 
 
-define("app_name", default='twork',
-        help = "Application Name Base On Twork")
-define("app_version", default='',
-        help = "The Application Version")
 define("config_file", default='%s/conf/twork.conf' % assembly.PROJECT_PATH,
         help = "Configuration File Specifying Options")
 define("log_config", default='%s/conf/log.conf' % assembly.PROJECT_PATH,
@@ -39,7 +35,7 @@ def _usage():
     print 'Usage: ./service -log_root=SpecifiedFilePath -port=SpecifiedPort'
     os._exit(0)
 
-def init_options():
+def setup_options():
     # maybe some options will be use before load config file
     tornado.options.parse_command_line()
 

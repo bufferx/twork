@@ -31,10 +31,8 @@ from twork import assembly
 
 define('v', default=False,
         help='Verbose, Print Debug Info', type=bool)
-
 define('log_level', default='DEBUG',
         help="Set Log Level")
-
 define('log_root', default=assembly.PROJECT_PATH,
         help='Log File Stored Root Path')
 
@@ -65,7 +63,7 @@ def setup_log():
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
-        _log_path = '%s/%s.access.log' % (log_path, options.app_name)
+        _log_path = '%s/twork.access.log' % log_path
         _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
         _hand.setLevel(logging.DEBUG)
         _hand.setFormatter(msg_formatter)
@@ -93,7 +91,7 @@ def setup_log():
                     '%Y-%m-%d %H:%M:%S')
 
         # 创建处理器
-        _log_path = '%s/%s.biz.log' % (log_path, options.app_name)
+        _log_path = '%s/twork.biz.log' % log_path
         _hand = logging.handlers.TimedRotatingFileHandler(_log_path, 'midnight', 1, 0)
         _hand.setLevel(logging.DEBUG)
         _hand.setFormatter(msg_formatter)

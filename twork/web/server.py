@@ -94,7 +94,7 @@ class _TApplication(tornado.web.Application):
         self._handler_st[st_item][method]['rt'] += request_time
         self._handler_st[st_item][method]['requests'] += 1
 
-    def init_app_info(self):
+    def __init_app_info(self):
         self.app_version = ''
         self.app_hash = ''
 
