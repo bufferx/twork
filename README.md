@@ -19,7 +19,8 @@ that the custom protocol server-app.
 
 ## Install
 
-pip install twork
++ pip install [twork](https://pypi.python.org/pypi/twork)
++ easy_install [twork](https://pypi.python.org/pypi/twork)
 
 ## TworkApp Builder
 Create your own project based on twork, **virtualenv** is recommend.
@@ -39,9 +40,10 @@ Enter your virtualenv first
 + make install
 + tworkd --app_module=$APP.twork_injection
 
-Case
-------------
-+ http://localhost:8000/v1.0/twork/stat
+## Case
+Check the web server
+
++ http://localhost:8000/v1.0/twork/stats
 
 ## Requirements
 The following libraries are required
