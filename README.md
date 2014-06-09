@@ -4,7 +4,7 @@
 
 ## Features
 
-### Web Framework
+### Web App Framework
 
 Control/Model separation, users simply writing Application Model
 
@@ -14,7 +14,8 @@ access logging, status statistics, overload protection, IP checking and so on
 
 ### Open Design
 
-Not only for web framework, can be directly embedded other control model
+Not only for web framework, can be directly embedded other control model, like
+that the custom protocol server-app.
 
 ## Install
 
@@ -32,7 +33,10 @@ Create your own project based on twork, **virtualenv** is recommend.
   isolated Python environments
 
 ## Usage
-
+Enter your virtualenv first
+ 
++ cd ~/workspace/$APP
++ make install
 + tworkd --app_module=$APP.twork_injection
 
 Case

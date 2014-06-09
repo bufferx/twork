@@ -30,6 +30,7 @@
 # under the License.
 
 import distutils.core
+import os
 import sys
 # Importing setuptools adds some features like "setup.py develop", but
 # it's optional so swallow the error if it's not there.
@@ -52,6 +53,18 @@ if major >= 3:
 distutils.core.setup(
     name="twork",
     version=twork.version,
+    long_description=open(os.path.join(os.path.dirname(__file__),
+                                         'README.md')).read(),
+    platforms=['POSIX'],
+    classifiers=[
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: POSIX',
+        'Programming Language :: Python',
+    ],
+    keywords=['tornado', 'web framework', 'web server',
+              'server framework',
+              'twork'],
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
