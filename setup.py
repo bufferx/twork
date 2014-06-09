@@ -73,6 +73,7 @@ distutils.core.setup(
             "twork_app/twork_app/utils/__init__.py",
             "twork_app/twork_app/utils/Makefile",
             "twork_app/twork_app/web/__init__.py",
+            "twork_app/twork_app/web/app.py",
             "twork_app/twork_app/web/Makefile",
             "twork_app/twork_app/web/action/__init__.py",
             "twork_app/twork_app/web/action/Makefile",

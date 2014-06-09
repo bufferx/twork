@@ -60,6 +60,7 @@ class BaseHandler(RequestHandler):
 
     def set_default_headers(self):
         self.set_header('Server', twork.SERVER_INFO)
+        self.set_header('TworkApp', self.application.APP_INFO)
 
     def on_finish(self):
         if not hasattr(self, '_max_requests'):

@@ -59,10 +59,16 @@ class _TApplication(tornado.web.Application):
         return {'fd': {'all': fd_all, 'requests': self._requests}, 'uptime': '%.3f' % (time.time() -
             self._start_time), 'handler': self._handler_st}
 
-    def __init__(self, handlers=None):
+    @property
+    def APP_INFO(self):
+        return self._app_info
+
+    def __init__(self, handlers=None, app_info=None):
         self._start_time = time.time()
         self._handler_st = {}
         self._requests = 0
+
+        self._app_info = app_info if app_info is not None else 'No-Set'
 
         debug = options.env.lower() == 'debug'
         app_settings = {
@@ -135,7 +141,7 @@ class HTTPServer(object):
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
-                    request_callback=_TApplication(handlers))
+                    request_callback=_TApplication(handlers=handlers, **kwargs))
 
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
