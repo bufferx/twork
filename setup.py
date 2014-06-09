@@ -56,7 +56,7 @@ distutils.core.setup(
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
     license="http://www.apache.org/licenses/LICENSE-2.0",
-    description="twork is a app framework based on tornado",
+    description="twork is a server-app framework based on tornado",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
         "twork": ["web/static/favicon.ico"],
@@ -87,6 +87,6 @@ distutils.core.setup(
          'twork-admin = scaffold.twork_admin:main',
          ],
       },
-    install_requires=['tornado==2.4.1'],
+    install_requires=['tornado==2.4.1', 'setproctitle==1.1.8', 'nose==1.3.3'],
     **kwargs
 )

@@ -1,53 +1,51 @@
-twork
-==========
+# twork
 
-twork is a neTwork server framework based on tornado
+**twork** is a server-app framework based on **tornado**
 
-Environment
-------------
-* [virtualenv](http://www.virtualenv.org/en/latest/) is a tool to create
+## Features
+
+### Web Framework
+
+Control/Model separation, users simply writing Application Model
+
+### Unified Infrastructure
+
+access logging, status statistics, overload protection, IP checking and so on
+
+### Open Design
+
+Not only for web framework, can be directly embedded other control model
+
+## Install
+
+pip install twork
+
+## TworkApp Builder
+Create your own project based on twork, **virtualenv** is recommend.
+
++ twork-admin -app=$APP -prefix=~/workspace
++ write your web request handler in $APP/$APP/web/action, and should be Inherited
+  from twork.web.action.BaseHandler
+
+### Environment
++ [virtualenv](http://www.virtualenv.org/en/latest/) is a tool to create
   isolated Python environments
 
-Requirements
-------------
-The following libraries are required
+## Usage
 
-* [tornado](http://github.com/facebook/tornado)
-
-Usage
-------------
-* source $VIRTUALENV/bin/activate
-* cd $TWORK_PATH && python setup.py install
-* tworkd -bind_ip=localhost -port=8000
-
-Supervisor
-------------
-* [supervisord](http://supervisord.org/)
-* [conf-template](https://github.com/bufferx/supervisor_conf_tpl)
-* command: python -OO $VIRTUALENV/bin/tworkd -config_file=$TWORK_CONFIG_PATH
++ tworkd --app_module=$APP.twork_injection
 
 Case
 ------------
-* http://localhost:8000/v1.0/twork/stat
++ http://localhost:8000/v1.0/twork/stat
 
-Publish
-------------
-Build your local [PyPI Server](https://pypi.python.org/pypi/pypiserver) first
+## Requirements
+The following libraries are required
 
-* make publish
++ tornado==2.4.1
++ setproctitle==1.1.8
++ nose==1.3.3
 
-Deploy
-------------
-
-* easy_install -U -i http://localhost:8080/simple twork
-
-Project Builder
-------------
-Create your own project based on twork
-
-* python twork-admin.py -project=$PROJECT -prefix=~/workspace
-
-Issues
-------
+## Issues
 
 Please report any issues via [github issues](https://github.com/bufferx/twork/issues)

@@ -28,8 +28,8 @@ import twork
 
 
 define('prefix', default='~/workspace',
-        help='install project files in [PREFIX]')
-define('project', default='', help='project name')
+        help='install twork-app files in [PREFIX]')
+define('app', default='', help='twork app name')
 define('git_init', default=True, help='git initialize whether or not')
 
 ORI_PROJECT = 'twork_app'
@@ -45,7 +45,7 @@ def make_clean(src_path):
         print 'COMMAND[make clean] ERROR: %s' % e
 
 def make_git_repo(dst_path):
-    os.chdir(os.path.join(dst_path, options.project))
+    os.chdir(os.path.join(dst_path, options.app))
     args = shlex.split('git init')
     try:
         p = subprocess.Popen(args)
@@ -60,20 +60,20 @@ def make_README(dst_path):
 ==========
 
 %s runs as a twork module
-''' % (options.project, options.project)
+''' % (options.app, options.app)
     
-    dst_path = os.path.join(dst_path, options.project)
+    dst_path = os.path.join(dst_path, options.app)
 
     with open('%s/README.md' % dst_path, 'w') as f:
         f.write(content.lstrip())
 
 def main():
     options.parse_command_line()
-    if not options.project:
+    if not options.app:
         options.print_help()
         sys.exit()
 
-    project_name = options.project
+    app_name = options.app
     src_path = os.path.realpath(
                 os.path.join(twork.__path__[0],
                     '..',
@@ -84,13 +84,13 @@ def main():
     #make_clean(src_path)
 
     shutil.copytree(os.path.join(src_path, ORI_PROJECT),
-            os.path.join(dst_path, project_name))
+            os.path.join(dst_path, app_name))
 
     rename_dirs = []
-    for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
+    for root, dirs, files in os.walk(os.path.join(dst_path, app_name)):
         for ori_name in dirs:
             if ORI_PROJECT in ori_name:
-                dst_name = ori_name.replace(ORI_PROJECT, project_name)
+                dst_name = ori_name.replace(ORI_PROJECT, app_name)
                 rename_dirs.append((os.path.join(root, ori_name),
                         os.path.join(root, dst_name)))
 
@@ -98,11 +98,11 @@ def main():
             if '.pyc' in name:
                 os.remove(os.path.realpath(os.path.join(root, name)))
 
-            if re.match(r'.+[py|md|sh|Makefile]$|' + project_name, name):
+            if re.match(r'.+[py|md|sh|Makefile]$|' + app_name, name):
                 with open(os.path.join(root,name),"r+") as f:
                     d = f.read()
-                    d = d.replace(ORI_PROJECT, project_name)
-                    d = d.replace(ORI_PROJECT.upper(), project_name.upper())
+                    d = d.replace(ORI_PROJECT, app_name)
+                    d = d.replace(ORI_PROJECT.upper(), app_name.upper())
                     f.truncate(0)
                     f.seek(0,0)
                     f.write(d)
