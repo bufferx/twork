@@ -36,7 +36,7 @@ from twork.timer.common_timer import CommonTimer
 import twork.utils
 
 
-define("injection_module", default=None,
+define("app_module", default=None,
         help="setup module is injected to twork.tworkd when main function execute")
 
 
@@ -88,16 +88,16 @@ def main():
 
     web_handlers   = None
     timer_callback = None
-    if options.injection_module is not None:
+    if options.app_module is not None:
         try:
-            _module = import_object(options.injection_module)
+            _module = import_object(options.app_module)
 
             web_handlers = _module.HANDLERS
             app_name = _module.APP_INFO.lower()
 
             _module.setup()
-            timer_callback = _module.timer_callback
 
+            timer_callback = _module.timer_callback
             if options.timer_start:
                 CommonTimer().start(timer_callback)
         except (ImportError, AttributeError) as e:

@@ -38,7 +38,7 @@ try:
 except ImportError:
     pass
 
-import twork
+import twork_app
 
 kwargs = {}
 
@@ -50,42 +50,16 @@ if major >= 3:
     kwargs["use_2to3"] = True
 
 distutils.core.setup(
-    name="twork",
-    version=twork.version,
+    name="twork_app",
+    version=twork_app.version,
     author="Zhang ZY",
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
     license="http://www.apache.org/licenses/LICENSE-2.0",
-    description="twork is a neTwork server framework based on tornado",
+    description="twork_app is a twork module which base on tornado",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
-        "twork": ["web/static/favicon.ico"],
-        "scaffold": [
-            "twork_app/setup.py",
-            "twork_app/Makefile",
-            "twork_app/twork_app/__init__.py",
-            "twork_app/twork_app/Makefile",
-            "twork_app/twork_app/twork_injection.py",
-            "twork_app/twork_app/domain/__init__.py",
-            "twork_app/twork_app/domain/Makefile",
-            "twork_app/twork_app/libs/__init__.py",
-            "twork_app/twork_app/libs/Makefile",
-            "twork_app/twork_app/utils/__init__.py",
-            "twork_app/twork_app/utils/Makefile",
-            "twork_app/twork_app/web/__init__.py",
-            "twork_app/twork_app/web/Makefile",
-            "twork_app/twork_app/web/action/__init__.py",
-            "twork_app/twork_app/web/action/Makefile",
-            ],
     },
-    scripts=["script/cut_twork_log.sh", "script/kill_tworkd.sh",
-        "script/reopen_twork_log.sh",],
-    entry_points = {
-     'console_scripts': [
-         'tworkd = twork.tworkd:main',
-         'twork-admin = scaffold.twork_admin:main',
-         ],
-      },
-    install_requires=['tornado==2.4.1'],
+    install_requires=['twork'],
     **kwargs
 )
