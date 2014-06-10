@@ -1,48 +1,73 @@
 # twork
 
-**twork** is a server-app framework based on **tornado**
+**twork** is a **T**ornado Application Frame**Work**, it supports business module injection, the module called TworkApp.
 
 ## Features
 
 ### Web App Framework
 
-Control/Model separation, users simply writing Application Model
++ Control(WebApplication)/Model(RequestHandler) separation, users simply writing Handler Model
++ Web RequestHandler should be Inherited from twork.web.action.base.BaseHandler
 
 ### Unified Infrastructure
 
-access logging, status statistics, overload protection, IP checking and so on
++ Web access logging
++ Status statistics
++ Overload protection
++ IP checking
++ Others
 
 ### Open Design
 
-Not only for web framework, can be directly embedded other control model, like
-that the custom protocol server-app.
++ Not only for web application framework
++ Can be directly embedded other control model, like that the custom protol server-app
++ Custom Logging Support
 
-## Install
+### Scaffold Support
 
-+ pip install [twork](https://pypi.python.org/pypi/twork)
-+ easy_install [twork](https://pypi.python.org/pypi/twork)
++ Build your own Tornado Application
++ As a app module injected to twork
 
-## TworkApp Builder
-Create your own project based on twork, **virtualenv** is recommend.
+### Easy Maintainable
 
-+ twork-admin -app=$APP -prefix=~/workspace
-+ write your web request handler in $APP/$APP/web/action, and should be Inherited
-  from twork.web.action.BaseHandler
++ Script Tools: log cut, log reopen, tworkd kill and others
++ Consistent process name: twork::$APP/$VERSION
+
+## Easy To Use
 
 ### Environment
+
+**virtualenv** is recommend.
+
 + [virtualenv](http://www.virtualenv.org/en/latest/) is a tool to create
   isolated Python environments
++ Initialize and enter the app virtualenv
++ For example, creating the **hello** application here
 
-## Usage
-Enter your virtualenv first
+### Install twork
+
++ pip install [twork](https://pypi.python.org/pypi/twork)
++ easy_install [twork](https://pypi.python.org/simple/twork/)
+
+### TworkApp Build
+
+Create your own tornado application based on twork.
+
++ twork-admin -app=hello -prefix=~/workspace
++ cd ~/workspace
+
+#### Web Handler(Optional)
++ write your web request handler in hello/hello/web/action directory, the handler should be Inherited from twork.web.action.base.BaseHandler
++ add uri:handler map to HANDLERS in hello/hello/app.py
+
+### Run TworkApp with tworkd
  
-+ cd ~/workspace/$APP
 + make install
-+ tworkd --app_module=$APP.twork_injection
++ tworkd --app_module=hello.twork_injection
 
-## Case
-Check the web server
+### Check the web server
 
++ http://localhost:8000/v1.0/hello/stats
 + http://localhost:8000/v1.0/twork/stats
 
 ## Requirements
