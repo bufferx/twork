@@ -92,6 +92,8 @@ distutils.core.setup(
             "twork_app/twork_app/web/Makefile",
             "twork_app/twork_app/web/action/__init__.py",
             "twork_app/twork_app/web/action/Makefile",
+            "twork_app/conf/twork.conf",
+            "twork_app/conf/log.conf",
             ],
     },
     scripts=["script/cut_twork_log.sh", "script/kill_tworkd.sh",

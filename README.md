@@ -67,7 +67,7 @@ Create your own tornado application based on twork.
 ### Run TworkApp within twork
  
 + make install
-+ tworkd --app_module=hello.twork_injection
++ tworkd -app_module=hello.twork_injection OR tworkd -config_file=conf/twork.conf
 
 ### Check the web server
 
