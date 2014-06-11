@@ -69,10 +69,14 @@ Create your own tornado application based on twork.
 + make install
 + tworkd -app_module=hello.twork_injection OR tworkd -config_file=conf/twork.conf
 
-### Check the web server
+### Access the web server
 
 + http://localhost:8000/v1.0/hello/stats
 + http://localhost:8000/v1.0/twork/stats
+
+### Check Htpp Response
++ Server: TWS/2.0.0.5
++ TworkApp: HELLO/1.0.0.0
 
 ## Requirements
 The following libraries are required
