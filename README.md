@@ -1,8 +1,12 @@
 # twork
 
-**twork** is a Tornado Application FrameWork, it supports business module injection, the module called TworkApp.
+**twork** is a Tornado Application FrameWork, it supports plug-in module injection, the module called TworkApp.
 
 ## Features
+
+### Plug-in
+
++ TworkApp as a plug-in injected to Twork
 
 ### Web App Framework
 
@@ -31,7 +35,7 @@
 ### Easy Maintainable
 
 + Script Tools: log cut, log reopen, tworkd kill and others
-+ Consistent process name: twork::$APP/$VERSION
++ Consistent process name: twork::hello/1.0.0.0
 
 ## Usage
 
