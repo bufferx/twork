@@ -54,7 +54,7 @@ distutils.core.setup(
     name="twork",
     version=twork.version,
     long_description=open(os.path.join(os.path.dirname(__file__),
-                                         'README.md')).read(),
+                                         'README.rst')).read(),
     platforms=['POSIX'],
     classifiers=[
         'Intended Audience :: Developers',
@@ -69,7 +69,7 @@ distutils.core.setup(
     author_email="idup2x@gmail.com",
     url="https://github.com/bufferx/twork",
     license="http://www.apache.org/licenses/LICENSE-2.0",
-    description="twork is a server-app framework based on tornado",
+    description="twork is a Tornado Application FrameWork, it supports plug-in module injection, the module called TworkApp.",
     packages = setuptools.find_packages(exclude=["test", "*.log"]),
     package_data = {
         "twork": ["web/static/favicon.ico"],

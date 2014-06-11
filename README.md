@@ -64,7 +64,7 @@ Create your own tornado application based on twork.
 + write your web request handler in hello/hello/web/action directory, the handler should be Inherited from twork.web.action.base.BaseHandler
 + add uri:handler map to HANDLERS in hello/hello/app.py
 
-### Run TworkApp with tworkd
+### Run TworkApp within twork
  
 + make install
 + tworkd --app_module=hello.twork_injection
