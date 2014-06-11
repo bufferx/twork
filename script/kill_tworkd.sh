@@ -14,4 +14,39 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-ps aux |  grep tworkd | grep -v grep | awk '{print $2}' | xargs kill -15
+USAGE="${0} -m[TWORK_APP] -v[TWORK_APP_VERSION]";
+
+if [ $# -lt 1 ]; then
+    echo $USAGE;
+    exit 1;
+fi
+
+
+while getopts "m:v:h" opt;
+do
+    case $opt in
+        m)
+            TWORK_APP=$OPTARG;
+            ;;
+        v)
+            APP_VERSION=$OPTARG;
+            ;;
+        h)
+            echo $USAGE;
+            exit;
+            ;;
+        ?)
+            echo $USAGE;
+            exit 1;
+            ;;
+        :)
+            echo "Option [$OPTARG] requires an argument";
+            exit 1;
+            ;;
+    esac
+done
+
+
+RPOC_TITLE=twork::${TWORK_APP}/${APP_VERSION};
+
+ps aux |  grep ${RPOC_TITLE} | grep -v grep | awk '{print $2}' | xargs kill -15
