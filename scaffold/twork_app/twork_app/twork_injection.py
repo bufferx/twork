@@ -1,4 +1,5 @@
 from twork.utils import gen_logger
+from twork.options import setup_options
 
 from twork_app import APP_NAME, APP_INFO
 from twork_app.web.app import HANDLERS
@@ -9,4 +10,4 @@ def timer_callback():
     gen_logger.debug('time callback')
 
 def setup():
-    pass
+    setup_options()
