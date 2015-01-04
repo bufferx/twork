@@ -89,6 +89,7 @@ def main():
     web_handlers   = None
     timer_callback = None
     app_info       = None
+    settings       = {}
     if options.app_module is not None:
         try:
             _module = import_object(options.app_module)
@@ -96,6 +97,7 @@ def main():
             web_handlers = _module.HANDLERS
             app_name = _module.APP_INFO.lower()
             app_info = _module.APP_INFO.upper()
+            settings = _module.SETTINGS
 
             _module.setup()
 
@@ -116,7 +118,7 @@ def main():
     gen_logger.info('START TORNADO SERVER ...')
 
     try:
-        HTTPServer().start(web_handlers, app_info=app_info)
+        HTTPServer().start(web_handlers, app_info=app_info, **settings)
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:

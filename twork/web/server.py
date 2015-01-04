@@ -63,7 +63,7 @@ class _TApplication(tornado.web.Application):
     def APP_INFO(self):
         return self._app_info
 
-    def __init__(self, handlers=None, app_info=None):
+    def __init__(self, handlers=None, app_info=None, **settings):
         self._start_time = time.time()
         self._handler_st = {}
         self._requests = 0
@@ -75,6 +75,9 @@ class _TApplication(tornado.web.Application):
                 'static_path': assembly.STATIC_PATH,
                 'debug':debug,
                 }
+
+        if settings:
+            app_settings = settings
 
         _handlers = [
             (r'^/v1.0/twork/stats$', action.StatHandler,
@@ -124,7 +127,7 @@ class _TApplication(tornado.web.Application):
 class HTTPServer(object):
     """Decorator Singleton, can't be inherited
     """
-    def start(self, handlers=None, **kwargs):
+    def start(self, handlers=None, app_info=None, **settings):
         sockets_list = []
         for bind_ip in options.bind_ip.split(','):
             if not bind_ip:
@@ -141,7 +144,9 @@ class HTTPServer(object):
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,
-                    request_callback=_TApplication(handlers=handlers, **kwargs))
+                    request_callback=_TApplication(handlers=handlers,
+                                                   app_info=app_info,
+                                                   **settings))
 
         for sockets in sockets_list:
             self.http_server.add_sockets(sockets)
