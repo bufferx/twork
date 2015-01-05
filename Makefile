@@ -14,4 +14,4 @@ install: build
 	python setup.py easy_install dist/*.egg
 
 publish: clean
-	python setup.py build_py bdist_egg upload -r pypi
+	python setup.py register sdist bdist_egg upload -r pypi
