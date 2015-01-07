@@ -104,6 +104,6 @@ distutils.core.setup(
          'twork-admin = scaffold.twork_admin:main',
          ],
       },
-    install_requires=['tornado==2.4.1', 'setproctitle==1.1.8', 'nose==1.3.3'],
+    install_requires=['setproctitle==1.1.8', 'nose==1.3.3'],
     **kwargs
 )
