@@ -107,7 +107,7 @@ def main():
         except (ImportError, AttributeError) as e:
             gen_logger.error(e, exc_info=True)
 
-    twork.utils.common.define_process_title('twork::' + app_name)
+    twork.utils.common.define_process_title('twork::{0}#{1}'.format(app_name, options.env))
 
     setup_log()
 

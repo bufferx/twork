@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-USAGE="${0} -m[TWORK_APP] -v[TWORK_APP_VERSION]";
+USAGE="${0} -m[TWORK_APP] -v[TWORK_APP_VERSION] -n[APP_ENV]";
 
 if [ $# -lt 1 ]; then
     echo $USAGE;
@@ -22,7 +22,7 @@ if [ $# -lt 1 ]; then
 fi
 
 
-while getopts "m:v:h" opt;
+while getopts "m:v:n:h" opt;
 do
     case $opt in
         m)
@@ -30,6 +30,9 @@ do
             ;;
         v)
             APP_VERSION=$OPTARG;
+            ;;
+        n)
+            APP_ENV=$OPTARG;
             ;;
         h)
             echo $USAGE;
@@ -47,6 +50,6 @@ do
 done
 
 
-RPOC_TITLE=twork::${TWORK_APP}/${APP_VERSION};
+RPOC_TITLE="[t]work::${TWORK_APP}/${APP_VERSION}#${APP_ENV}";
 
-ps aux |  grep ${RPOC_TITLE} | grep -v grep | awk '{print $2}' | xargs kill -15
+ps aux |  grep ${RPOC_TITLE} | awk '{print $2}' | xargs kill -15
