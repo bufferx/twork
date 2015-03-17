@@ -1,5 +1,11 @@
 # twork
 
+.. image:: https://badge.fury.io/py/twork.png
+    :target: http://badge.fury.io/py/twork
+
+.. image:: https://pypip.in/d/twork/badge.png
+    :target: https://crate.io/packages/twork?version=latest
+
 **twork** is a Tornado Application FrameWork, it supports plug-in module injection, the module called TworkApp.
 
 ## Features
