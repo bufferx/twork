@@ -26,7 +26,7 @@
 ### Open Design
 
 + Not only for web application framework
-+ Can be directly embedded other control model, like that the custom protol server-app
++ Can be directly embedded other control model, like that the custom protcol server-app
 + Custom Logging Support
 
 ### Scaffold Support
