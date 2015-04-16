@@ -1,5 +1,7 @@
 # twork
 
+[![Join the chat at https://gitter.im/bufferx/twork](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bufferx/twork?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Pypi package](https://badge.fury.io/py/twork.png)](http://badge.fury.io/py/twork) [![Pypi downloads](https://pypip.in/d/twork/badge.png)](https://crate.io/packages/twork?version=latest)
 
 **twork** is a Tornado Application FrameWork, it supports plug-in module injection, the module called TworkApp.
