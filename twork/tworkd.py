@@ -41,7 +41,7 @@ define("app_module", default=None,
 
 
 def _quit():
-    if not tornado.ioloop.IOLoop.instance().running():
+    if not tornado.ioloop.IOLoop.instance()._running:
         return
 
     CommonTimer().stop()
@@ -83,6 +83,10 @@ def main():
     """main function
     """
     setup_options()
+    setup_log()
+    _setup_signal()
+
+    gen_logger.info('START TORNADO SERVER ...')
 
     app_name = 'twork'
 
@@ -107,15 +111,9 @@ def main():
         except (ImportError, AttributeError) as e:
             gen_logger.error(e, exc_info=True)
 
-    twork.utils.common.define_process_title('twork::{0}#{1}'.format(app_name, options.env))
-
-    setup_log()
-
-    _setup_signal()
-
     _log_options()
 
-    gen_logger.info('START TORNADO SERVER ...')
+    twork.utils.common.define_process_title('twork::{0}#{1}'.format(app_name, options.env))
 
     try:
         HTTPServer().start(web_handlers, app_info=app_info, **settings)
