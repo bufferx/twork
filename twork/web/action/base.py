@@ -26,8 +26,7 @@ import twork
 
 from twork.utils import gen_logger, access_logger
 
-from twork.errors import ParameterEmptyError
-from twork.errors import ParameterTypeError
+from twork.errors import (BaseError, ParameterEmptyError, ParameterTypeError)
 from twork.consts import USER_AGENT
 
 define("max_requests", default=0, help="Max Concurrency Requests")
@@ -95,3 +94,8 @@ class BaseHandler(RequestHandler):
             raise ParameterTypeError(parameter_name)
 
         return v
+
+    def init_rsp_json(self):
+        self.rsp_json = {'code': BaseError.ERROR[0],
+                        'msg': BaseError.ERROR[1],
+                        'data': {}}
