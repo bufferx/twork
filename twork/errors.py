@@ -50,8 +50,8 @@ class ErrorMessage(object):
 class BaseError(Exception):
     ERROR = (0XFF, 'UNCAUGHT ERROR')
 
-    def __init__(self, msg=None):
-        self.e_code = self.ERROR[0]
+    def __init__(self, code=None, msg=None):
+        self.e_code = self.__class__.ERROR[0] if code is None else code
         self.e_msg = self.__class__.ERROR[1] if msg is None else msg
 
     def __str__(self):
