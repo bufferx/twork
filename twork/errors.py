@@ -48,12 +48,14 @@ class ErrorMessage(object):
 
 
 class BaseError(Exception):
-    def __init__(self, msg='Default'):
-        self.e_code = ErrorCode.DEFAULT
-        self.e_msg = 'Uncaught Exception: %s' % Exception.message
+    ERROR = (0XFF, 'UNCAUGHT ERROR')
+
+    def __init__(self, msg=None):
+        self.e_code = self.ERROR[0]
+        self.e_msg = self.__class__.ERROR[1] if msg is None else msg
 
     def __str__(self):
-        return self.e_msg 
+        return '({0}, {1})'.format(self.e_code, self.e_msg)
 
 
 class TooManyRequest(BaseError):
