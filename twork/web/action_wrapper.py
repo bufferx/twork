@@ -47,3 +47,5 @@ def web_method_wrapper(func):
             gen_logger.error(e, exc_info=True)
 
     return wrapper
+
+coroutine_engine = web_method_wrapper
