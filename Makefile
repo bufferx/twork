@@ -1,10 +1,8 @@
 all:
 	@echo "do nothing"
 
-.PHONY : clean
 clean:
-	cd ./twork/ && make clean
-	cd ./test/ && make clean
+	rm -f `find . -type f -name '*.py[co]' `
 	rm -fr twork.egg-info build dist
 
 build: clean
