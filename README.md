@@ -85,7 +85,7 @@ Create your own tornado application based on twork.
 ## Requirements
 The following libraries are required
 
-+ tornado==2.4.1
++ tornado==4.2.1
 + setproctitle==1.1.8
 + nose==1.3.3
 
