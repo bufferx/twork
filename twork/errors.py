@@ -22,10 +22,10 @@ class ErrorCode(object):
     DEFAULT = 0xff
     SUCCESS = 0x00
     # 参数
-    PARAMETERS = 100
-    PARAMETERS_EMPTY = 101
-    PARAMETERS_TYPE = 102
-    PARAMETERS_DATE = 103
+    ARGUMENTS = 100
+    ARGUMENTS_EMPTY = 101
+    ARGUMENTS_TYPE = 102
+    ARGUMENTS_DATE = 103
     # 网络IO
     TCP = 500
     HTTP = 501
@@ -67,36 +67,36 @@ class TooManyRequest(BaseError):
         return self.e_msg
 
 
-class ParameterError(BaseError):
+class ArgumentError(BaseError):
     def __init__(self, msg=''):
-        self.e_code = ErrorCode.PARAMETERS
-        self.e_msg = 'Invalid Parameter: %s' % msg
+        self.e_code = ErrorCode.ARGUMENTS
+        self.e_msg = 'Invalid Argument: %s' % msg
 
     def __str__(self):
         return self.e_msg 
 
 
-class ParameterEmptyError(BaseError):
-    def __init__(self, parameter_name=''):
-        self.e_code = ErrorCode.PARAMETERS
-        self.e_msg = 'Parameter[%s] Can\'t Be NULL' % parameter_name.upper()
+class ArgumentEmptyError(BaseError):
+    def __init__(self, argument_name=''):
+        self.e_code = ErrorCode.ARGUMENTS
+        self.e_msg = 'Argument[%s] Can\'t Be NULL' % argument_name.upper()
 
     def __str__(self):
         return self.e_msg 
 
 
-class ParameterTypeError(BaseError):
-    def __init__(self, parameter_name=''):
-        self.e_code = ErrorCode.PARAMETERS
-        self.e_msg = 'Parameter[%s]\'type Is Invalid' % parameter_name.upper()
+class ArgumentTypeError(BaseError):
+    def __init__(self, argument_name=''):
+        self.e_code = ErrorCode.ARGUMENTS
+        self.e_msg = 'Argument[%s]\'type Is Invalid' % argument_name.upper()
 
     def __str__(self):
         return self.e_msg 
 
 
-class ParameterDateError(ParameterError):
+class ArgumentDateError(ArgumentError):
     def __init__(self, msg=''):
-        self.e_code = ErrorCode.PARAMETERS_DATE 
+        self.e_code = ErrorCode.ARGUMENTS_DATE
         self.e_msg = 'Invalid Date: %s' % msg
 
     def __str__(self):

@@ -26,7 +26,7 @@ import twork
 
 from twork.utils import gen_logger, access_logger
 
-from twork.errors import (BaseError, ParameterEmptyError, ParameterTypeError)
+from twork.errors import (BaseError, ArgumentEmptyError, ArgumentTypeError)
 from twork.consts import USER_AGENT
 
 define("max_requests", default=0, help="Max Concurrency Requests")
@@ -83,15 +83,15 @@ class BaseHandler(RequestHandler):
         if not self._finished:
             self.finish(data)
 
-    def _check_argument(self, parameter_name,
+    def _check_argument(self, argument_name,
             default_value=None, expect_types=()):
-        v = self.get_argument(parameter_name, default_value)
+        v = self.get_argument(argument_name, default_value)
 
         if v is None:
-            raise ParameterEmptyError(parameter_name)
+            raise ArgumentEmptyError(argument_name)
 
         if expect_types and not isinstance(v, expect_types): 
-            raise ParameterTypeError(parameter_name)
+            raise ArgumentTypeError(argument_name)
 
         return v
 
