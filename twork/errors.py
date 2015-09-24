@@ -33,7 +33,7 @@ class ErrorCode(object):
     DB_ERROR = 301
     DB_EMPTY = 302
     # others
-    TOO_MANY_REQUEST = 400
+    TOO_MANY_REQUEST = 429
 
 
 class ErrorMessage(object):
@@ -58,64 +58,61 @@ class BaseError(Exception):
         return '({0}, {1})'.format(self.e_code, self.e_msg)
 
 
-class TooManyRequest(BaseError):
-    def __init__(self, msg=''):
-        self.e_code = ErrorCode.TOO_MANY_REQUEST
-        self.e_msg = 'Too Many Requests: %s' % msg
-
-    def __str__(self):
-        return self.e_msg
+class TooManyRequestError(BaseError):
+    ERROR = (429, 'Too Many Requests')
 
 
 class ArgumentError(BaseError):
-    def __init__(self, msg=''):
-        self.e_code = ErrorCode.ARGUMENTS
-        self.e_msg = 'Invalid Argument: %s' % msg
+    ERROR = (4000, 'INVALID ARGUMENT')
+
+    def __init__(self, argument_name):
+        self.e_code = self.ERROR[0]
+        self.e_msg  = '{0}: {1}'.format(self.ERROR[1],
+                argument_name)
 
     def __str__(self):
-        return self.e_msg 
+        return '({0}, {1})'.format(self.e_code, self.e_msg)
 
 
-class ArgumentEmptyError(BaseError):
-    def __init__(self, argument_name=''):
-        self.e_code = ErrorCode.ARGUMENTS
-        self.e_msg = 'Argument[%s] Can\'t Be NULL' % argument_name.upper()
-
-    def __str__(self):
-        return self.e_msg 
+class ArgumentNotFoundError(ArgumentError):
+    """
+    """
+    ERROR = (4001, 'Argument Not Found')
 
 
-class ArgumentTypeError(BaseError):
-    def __init__(self, argument_name=''):
-        self.e_code = ErrorCode.ARGUMENTS
-        self.e_msg = 'Argument[%s]\'type Is Invalid' % argument_name.upper()
-
-    def __str__(self):
-        return self.e_msg 
+class ArgumentEmptyError(ArgumentError):
+    """
+    """
+    ERROR = (4002, 'Argument Can\'t Be Empty')
 
 
-class ArgumentDateError(ArgumentError):
-    def __init__(self, msg=''):
-        self.e_code = ErrorCode.ARGUMENTS_DATE
-        self.e_msg = 'Invalid Date: %s' % msg
+class ArgumentTypeError(ArgumentError):
+    """Bad Argument Type
+    """
+    ERROR = (4003, 'Argument Type Invalid')
 
-    def __str__(self):
-        return self.e_msg 
+
+class BizBaseError(BaseError):
+    """Business Base Error
+
+    Twork Module May Need To Inherit This Class.
+    """
+    ERROR = (40000, 'Biz Error')
+
+
+class ServiceError(BaseError):
+    """
+    """
+    ERROR = (50000, 'Serivce ERROR')
 
 
 class DBError(BaseError):
-    def __init__(self, msg=''):
-        self.e_code = ErrorCode.DB_ERROR 
-        self.e_msg = 'DB Error: %s' % msg
-
-    def __str__(self):
-        return self.e_msg 
+    """
+    """
+    ERROR = (50010, 'DB ERROR')
 
 
-class DBEmpty(DBError):
-    def __init__(self, msg=''):
-        self.e_code = ErrorCode.DB_EMPTY 
-        self.e_msg = 'DB Empty: %s' % msg
-
-    def __str__(self):
-        return self.e_msg 
+class DBAuthError(BaseError):
+    """
+    """
+    ERROR = (50011, 'DB Auth ERROR')
