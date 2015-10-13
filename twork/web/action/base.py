@@ -95,6 +95,23 @@ class BaseHandler(RequestHandler):
 
         return v
 
+    check_argument = _check_argument
+
+    def check_body_argument(self, argument_name, default_value=None,
+            can_be_empty=True, expect_type=(), strip=False):
+        v = self.get_body_argument(argument_name, default_value, strip=strip)
+
+        if v is None:
+            raise ArgumentNotFoundError(argument_name)
+
+        if not can_be_empty and not v:
+            raise ArgumentEmptyError(argument_name)
+
+        if expect_type and not isinstance(v, expect_type):
+            raise ArgumentTypeError(argument_name)
+
+        return v
+
     def init_rsp_json(self):
         self.rsp_json = {'code': BaseError.ERROR[0],
                         'msg': BaseError.ERROR[1],
