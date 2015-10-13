@@ -20,6 +20,12 @@ import functools
 import logging
 import time
 
+from itertools import izip
+
+from tornado.escape import (utf8, url_unescape)
+
+from twork.utils.object_likefy import ObjectLikefy
+
 gen_logger = logging.getLogger('twork.general')
 
 log_time = lambda f, t: 'Function[%s] Consume %.3fms' % (f, (time.time() - t) * 1000)
@@ -39,6 +45,8 @@ def time_it(func):
 
 
 def singleton(cls, *args, **kw):
+    """Make Class Single
+    """
     instance = {}
     def _singleton():
         if cls not in instance:
@@ -55,3 +63,27 @@ def define_process_title(proc_title='twork'):
         setproctitle.setproctitle(proc_title)
     except ImportError as e:
         gen_logger.error(e)
+
+
+def parse_web_input(inner_arguments, input_arguments,
+        check_argument_func, object_likefy=True):
+    """Transform Web Input Request To Inner Variable
+    """
+    def _convert(v):
+        if v is None:
+            return None
+
+        return utf8(url_unescape(v))
+
+    argu_values = []
+    for argument in input_arguments:
+        value = check_argument_func(argument, None)
+        argu_values.append(value)
+
+    res = dict(izip(inner_arguments,
+                    (_convert(v) for v in argu_values)))
+
+    if object_likefy:
+        res = ObjectLikefy(res)
+
+    return res
