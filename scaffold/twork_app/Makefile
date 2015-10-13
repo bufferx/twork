@@ -3,7 +3,7 @@ all:
 
 .PHONY : clean
 clean:
-	cd ./twork_app/ && make clean
+	rm -f `find . -type f -name '*.py[co]' `
 	rm -fr *.egg-info build dist
 
 build: clean
