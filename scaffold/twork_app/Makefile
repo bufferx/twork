@@ -4,10 +4,10 @@ all:
 .PHONY : clean
 clean:
 	cd ./twork_app/ && make clean
-	rm -fr twork_app.egg-info build dist
+	rm -fr *.egg-info build dist
 
 build: clean
-	python setup.py build_py -O2 bdist_egg --exclude-source-files
+	python setup.py build_py bdist_egg --exclude-source-files
 
 install: build
 	python setup.py easy_install dist/*.egg

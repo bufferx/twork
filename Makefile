@@ -3,7 +3,7 @@ all:
 
 clean:
 	rm -f `find . -type f -name '*.py[co]' `
-	rm -fr twork.egg-info build dist
+	rm -fr *.egg-info build dist
 
 build: clean
 	python setup.py build_py bdist_egg
