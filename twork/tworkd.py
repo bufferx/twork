@@ -18,8 +18,8 @@
 """tworkd
 """
 
+import psutil
 import tornado
-
 import sys
 import signal
 
@@ -38,6 +38,8 @@ import twork.utils
 
 define("app_module", default=None,
         help="setup module is injected to twork.tworkd when main function execute")
+define("cpu_bindings", default='0,1,2,3', type=str,
+        help="CPU Affinity")
 
 
 def _quit():
@@ -71,6 +73,15 @@ def _setup_signal():
 
     signal.signal(signal.SIGUSR1, _reopen_log)
 
+def _setup_cpu_affinity():
+    cpu_bindings = options.cpu_bindings.split(',')
+    cpu_bindings = [int(core) for core in cpu_bindings]
+    if not cpu_bindings:
+        return
+
+    p = psutil.Process()
+    p.cpu_affinity(cpu_bindings)
+
 def _log_options():
     if tornado.version_info < (3, 0, 0, 0):
         for key, option in options.iteritems():
@@ -85,6 +96,7 @@ def main():
     setup_options()
     setup_log()
     _setup_signal()
+    _setup_cpu_affinity()
 
     gen_logger.info('START TORNADO SERVER ...')
 
