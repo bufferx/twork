@@ -38,6 +38,8 @@ import twork.utils
 
 define("app_module", default=None,
         help="setup module is injected to twork.tworkd when main function execute")
+define("cpu_bindings_modulo", default=False, type=bool,
+        help="CPU Affinity By Modulo Cores With Pid")
 define("cpu_bindings", default='0,1,2,3', type=str,
         help="CPU Affinity")
 
@@ -74,13 +76,18 @@ def _setup_signal():
     signal.signal(signal.SIGUSR1, _reopen_log)
 
 def _setup_cpu_affinity():
-    cpu_bindings = options.cpu_bindings.split(',')
-    cpu_bindings = [int(core) for core in cpu_bindings]
-    if not cpu_bindings:
-        return
-
     p = psutil.Process()
+
+    if options.cpu_bindings_modulo:
+        cpu_bindings = [p.pid % len(p.cpu_affinity())]
+    else:
+        cpu_bindings = options.cpu_bindings.split(',')
+        cpu_bindings = [int(core) for core in cpu_bindings]
+        if not cpu_bindings:
+            return
+
     p.cpu_affinity(cpu_bindings)
+    gen_logger.warn('CPU AFFINITY: %s', p.cpu_affinity())
 
 def _log_options():
     if tornado.version_info < (3, 0, 0, 0):
