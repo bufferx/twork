@@ -97,8 +97,10 @@ def main():
         for name in files:
             if '.pyc' in name:
                 os.remove(os.path.realpath(os.path.join(root, name)))
+                continue
 
-            if re.match(r'.+[py|md|sh|Makefile]$|' + app_name, name):
+            if re.match(r'.+([py]|[md]|[sh]|[Makefile]|[cfg]|[gitignore])$|' + app_name,
+                    name):
                 with open(os.path.join(root,name),"r+") as f:
                     d = f.read()
                     d = d.replace(ORI_PROJECT, app_name)
