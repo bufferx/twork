@@ -1,2 +1,2 @@
-"""Write Your Domain Model Here
+"""Write Your Domain Module Here
 """
