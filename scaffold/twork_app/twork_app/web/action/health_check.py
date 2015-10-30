@@ -19,6 +19,9 @@ class HealthCheckHandler(BaseHandler):
     def post(self, *args, **kwargs):
         raise HTTPError(405)
 
+    def put(self, *args, **kwargs):
+        raise HTTPError(405)
+
     def delete(self, *args, **kwargs):
         raise HTTPError(405)
 
