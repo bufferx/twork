@@ -66,7 +66,7 @@ Create your own tornado application based on twork.
 
 #### Web Handler(Optional)
 + write your web request handler in hello/hello/web/action directory, the handler should be Inherited from twork.web.action.base.BaseHandler
-+ add uri:handler map to HANDLERS in hello/hello/app.py
++ add uri:handler map to HANDLERS in hello/hello/app/handlers.py
 
 ### Run TworkApp within twork
  
@@ -79,8 +79,8 @@ Create your own tornado application based on twork.
 + http://localhost:8000/v1.0/twork/stats
 
 ### Check Htpp Response
-+ Server: TWS/2.0.0.5
-+ TworkApp: HELLO/1.0.0.0
++ Server: TWS/2.0.1
++ TworkApp: HELLO/1.0.0
 
 ## Requirements
 The following libraries are required
