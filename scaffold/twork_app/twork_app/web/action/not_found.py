@@ -19,6 +19,9 @@ class NotFoundHandler(BaseHandler):
     def post(self, *args, **kwargs):
         raise HTTPError(404)
 
+    def put(self, *args, **kwargs):
+        raise HTTPError(404)
+
     def delete(self, *args, **kwargs):
         raise HTTPError(404)
 
