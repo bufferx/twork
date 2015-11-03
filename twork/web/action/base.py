@@ -18,11 +18,14 @@
 '''BaseRequestHandler 
 '''
 
+import logging
+import twork
+
+from tornado import gen
+
 from tornado.web import RequestHandler
 from tornado.web import HTTPError
 from tornado.options import define, options
-
-import twork
 
 from twork.utils import gen_logger, access_logger
 
@@ -30,6 +33,9 @@ from twork.errors import (BaseError, ArgumentEmptyError, ArgumentTypeError)
 from twork.consts import USER_AGENT
 
 define("max_requests", default=0, help="Max Concurrency Requests")
+
+
+gen_logger = logging.getLogger('twork.general')
 
 
 class BaseHandler(RequestHandler):
@@ -116,3 +122,19 @@ class BaseHandler(RequestHandler):
         self.rsp_json = {'code': BaseError.ERROR[0],
                         'msg': BaseError.ERROR[1],
                         'data': {}}
+
+    @gen.coroutine
+    def finished(self):
+        """Call after the end of a request.
+
+        Be Called By web_method_wrapper.
+        Override this method to perform wome actions
+        """
+
+    @gen.coroutine
+    def on_error(self, error):
+        """Handle And Process HTTP-Method Error
+
+        Override this method to perform some actions
+        """
+        pass
