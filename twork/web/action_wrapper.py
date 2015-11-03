@@ -34,16 +34,21 @@ def web_method_wrapper(func):
 
         try:
             yield func(self, *args, **kwargs)
+            yield self.finished()
         except BaseError as e:
             self.rsp_json['code']  = e.e_code
             self.rsp_json['msg']  = e.e_msg
 
             self.api_response(self.rsp_json)
+            yield self.on_error(e)
+
             gen_logger.error(e, exc_info=True)
         except StopIteration as e:
             raise e
         except Exception as e:
             self.api_response(self.rsp_json)
+            yield self.on_error(e)
+
             gen_logger.error(e, exc_info=True)
 
     return wrapper
