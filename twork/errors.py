@@ -17,6 +17,8 @@
 '''Error Defining 
 '''
 
+from twork.consts import E_CODE_UNCAUGHT
+
 
 class ErrorCode(object):
     DEFAULT = 0xff
@@ -48,7 +50,7 @@ class ErrorMessage(object):
 
 
 class BaseError(Exception):
-    ERROR = (0XFF, 'UNCAUGHT ERROR')
+    ERROR = (E_CODE_UNCAUGHT, 'UNCAUGHT ERROR')
 
     def __init__(self, code=None, msg=None):
         self.e_code = self.__class__.ERROR[0] if code is None else code
