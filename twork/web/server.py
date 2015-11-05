@@ -127,7 +127,7 @@ class _TApplication(tornado.web.Application):
 class HTTPServer(object):
     """Decorator Singleton, can't be inherited
     """
-    def start(self, handlers=None, app_info=None, **settings):
+    def start(self, handlers=None, app_info=None, twork_module=None, **settings):
         sockets_list = []
         for bind_ip in options.bind_ip.split(','):
             if not bind_ip:
@@ -141,6 +141,9 @@ class HTTPServer(object):
 
         if options.num_processes >= 0:
             process.fork_processes(options.num_processes)
+
+        if twork_module is not None:
+            twork_module.setup()
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,

@@ -113,6 +113,7 @@ def main():
     timer_callback = None
     app_info       = None
     settings       = {}
+    _module        = None
     if options.app_module is not None:
         try:
             _module = import_object(options.app_module)
@@ -122,8 +123,6 @@ def main():
             app_info = _module.APP_INFO.upper()
             settings = _module.SETTINGS
 
-            _module.setup()
-
             timer_callback = _module.timer_callback
             if options.timer_start:
                 CommonTimer().start(timer_callback)
@@ -132,10 +131,13 @@ def main():
 
     _log_options()
 
-    twork.utils.common.define_process_title('twork::{0}#{1}'.format(app_name, options.env))
+    twork.utils.common.define_process_title('twork::{0}#{1}'.
+            format(app_name, options.env))
 
     try:
-        HTTPServer().start(web_handlers, app_info=app_info, **settings)
+        HTTPServer().start(web_handlers, app_info=app_info,
+                twork_module=_module,
+                **settings)
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:
