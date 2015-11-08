@@ -103,7 +103,6 @@ def main():
     setup_options()
     setup_log()
     _setup_signal()
-    _setup_cpu_affinity()
 
     gen_logger.info('START TORNADO SERVER ...')
 
@@ -138,6 +137,8 @@ def main():
         HTTPServer().start(web_handlers, app_info=app_info,
                 twork_module=_module,
                 **settings)
+
+        _setup_cpu_affinity()
 
         tornado.ioloop.IOLoop.instance().start()
     except Exception as e:
