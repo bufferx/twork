@@ -18,6 +18,7 @@
 
 import functools
 import logging
+import os
 import time
 
 from itertools import izip
@@ -87,3 +88,12 @@ def parse_web_input(inner_arguments, input_arguments,
         res = ObjectLikefy(res)
 
     return res
+
+
+def check_file_exists(file_path):
+    """Check Whether The Specified File Exists
+    """
+    real_path = os.path.realpath(file_path)
+    if os.path.exists(real_path):
+        return True
+    return False
