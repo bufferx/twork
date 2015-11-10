@@ -40,16 +40,16 @@ def web_method_wrapper(func):
             self.rsp_json['msg']  = e.e_msg
 
             self.api_response(self.rsp_json)
-            yield self.on_error(e)
-
             gen_logger.error(e, exc_info=True)
+
+            yield self.on_error(e)
         except StopIteration as e:
             raise e
         except Exception as e:
             self.api_response(self.rsp_json)
-            yield self.on_error(e)
-
             gen_logger.error(e, exc_info=True)
+
+            yield self.on_error(e)
 
     return wrapper
 
