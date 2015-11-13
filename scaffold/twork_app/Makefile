@@ -11,15 +11,17 @@ build_egg: clean
 install_egg: build_egg
 	easy_install dist/*.egg
 
-local_install: install_egg
-
 build: clean
 	python setup.py build_py bdist_wheel
+	cp Makefile dist
 
-install:
+install: build
 	pip install dist/*.whl -U
 
-install_whl: build install
+install_whl: install
+
+deploy:
+	pip install *.whl -U
 
 uninstall:
 	pip uninstall -y twork_app
