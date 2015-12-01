@@ -8,7 +8,7 @@
 from tornado.web import HTTPError
 
 from twork_app.constants import ST_ITEM_HEARTBEAT
-from twork_app.web.action.base import BaseHandler
+from twork_app.web.handler.base import BaseHandler
 
 
 class HeartBeatHandler(BaseHandler):

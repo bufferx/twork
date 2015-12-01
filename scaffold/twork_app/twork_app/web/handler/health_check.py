@@ -13,7 +13,7 @@ from tornado.web import HTTPError
 from twork.utils.common import check_file_exists
 
 from twork_app.constants import ST_ITEM_HEALTHCHECK
-from twork_app.web.action.base import BaseHandler
+from twork_app.web.handler.base import BaseHandler
 
 
 gen_logger = logging.getLogger('twork.general')
