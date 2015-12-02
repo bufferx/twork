@@ -23,4 +23,4 @@ uninstall:
 	pip uninstall -y twork
 
 publish: clean
-	python setup.py register sdist upload -r pypi
+	python setup.py build_py bdist_wheel upload -r pypi
