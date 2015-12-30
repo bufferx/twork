@@ -28,6 +28,7 @@ from tornado.options import define, options
 from tornado import process
 import tornado.web
 
+from twork.timer.common_timer import CommonTimer
 from twork.web import action
 from twork.web import assembly
 from twork.utils import gen_logger
@@ -144,6 +145,9 @@ class HTTPServer(object):
 
         if twork_module is not None:
             twork_module.setup()
+
+        if options.timer_start:
+            CommonTimer().start(twork_module.timer_callback)
 
         self.http_server =  \
             tornado.httpserver.HTTPServer(xheaders=True,

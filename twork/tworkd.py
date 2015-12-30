@@ -109,7 +109,6 @@ def main():
     app_name = 'twork'
 
     web_handlers   = None
-    timer_callback = None
     app_info       = None
     settings       = {}
     _module        = None
@@ -121,10 +120,6 @@ def main():
             app_name = _module.APP_INFO.lower()
             app_info = _module.APP_INFO.upper()
             settings = _module.SETTINGS
-
-            timer_callback = _module.timer_callback
-            if options.timer_start:
-                CommonTimer().start(timer_callback)
         except (ImportError, AttributeError) as e:
             gen_logger.error(e, exc_info=True)
 
