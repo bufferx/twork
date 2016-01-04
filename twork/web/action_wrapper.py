@@ -25,9 +25,15 @@ from tornado.options import options
 
 from twork.errors import BaseError
 
-define('base_error_traceback_open', default=False, type=bool, help='')
+define('traceback_4_baseerror',
+       default=False,
+       type=bool,
+       help='Whether Traceback for BaseError')
 
-define('exception_traceback_open', default=True, type=bool, help='')
+define('traceback_4_exception',
+       default=True,
+       type=bool,
+       help='Whether Traceback For Exception')
 
 gen_logger = logging.getLogger('twork.general')
 
@@ -46,14 +52,14 @@ def web_method_wrapper(func):
             self.rsp_json['msg']  = e.e_msg
 
             self.api_response(self.rsp_json)
-            gen_logger.error(e, exc_info=options.base_error_traceback_open)
+            gen_logger.error(e, exc_info=options.traceback_4_baseerror)
 
             yield self.on_error(e)
         except StopIteration as e:
             raise e
         except Exception as e:
             self.api_response(self.rsp_json)
-            gen_logger.error(e, exc_info=options.exception_traceback_open)
+            gen_logger.error(e, exc_info=options.traceback_4_exception)
 
             yield self.on_error(e)
 
