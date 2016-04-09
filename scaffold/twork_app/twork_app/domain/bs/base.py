@@ -1,5 +1,4 @@
-"""Base Action For WebHandler
-;wa
+"""Base BS
 """
 
 import logging
@@ -10,12 +9,11 @@ from twork.utils.object_likefy import ObjectLikefy
 
 from twork_app.module import Module
 
-
 gen_logger = logging.getLogger('twork.general')
 
 
-class BaseAction(object):
-    """Base Action
+class BaseBS(object):
+    """Base BS
     """
     INPUT_ARGUMENTS = ('queryid', )
     INNER_ARGUMENTS = ('query_id', )

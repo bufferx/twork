@@ -3,9 +3,9 @@
 
 from twork.web.action import StatHandler
 
-from twork_app.web.handler.health_check import HealthCheckHandler
-from twork_app.web.handler.heartbeat import HeartBeatHandler
-from twork_app.web.handler.not_found import NotFoundHandler
+from twork_app.web.action.health_check import HealthCheckHandler
+from twork_app.web.action.heartbeat import HeartBeatHandler
+from twork_app.web.action.not_found import NotFoundHandler
 
 
 HANDLERS = [

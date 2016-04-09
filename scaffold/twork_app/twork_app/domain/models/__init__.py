@@ -1,2 +1,0 @@
-"""Define Domain Models Here
-"""

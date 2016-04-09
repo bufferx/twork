@@ -17,7 +17,7 @@ from twork.utils.common import parse_web_input
 
 from twork.web.action.base import BaseHandler as TBaseHandler
 
-from twork_app.domain.web.action.base import BaseAction
+from twork_app.domain.bs.base import BaseBS
 
 
 gen_logger = logging.getLogger('twork.general')
@@ -34,7 +34,7 @@ class BaseHandler(TBaseHandler):
         """
         input = self._init_input()
 
-        action = BaseAction(input, rsp_json=self.rsp_json)
+        action = BaseBS(input, rsp_json=self.rsp_json)
         action.execute()
 
     def post(self, *args, **kwargs):
@@ -55,8 +55,8 @@ class BaseHandler(TBaseHandler):
     def _init_input(self):
         """Initialize And Convert WebInput Argument To Inner Argument
         """
-        input = parse_web_input(BaseAction.INNER_ARGUMENTS,
-                                BaseAction.INPUT_ARGUMENTS,
+        input = parse_web_input(BaseBS.INNER_ARGUMENTS,
+                                BaseBS.INPUT_ARGUMENTS,
                                 self.get_argument)
         if input.query_id is None:
             input.query_id = '%.6f' % time.time()

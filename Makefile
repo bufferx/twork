@@ -5,6 +5,9 @@ clean:
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -fr *.egg-info build dist
 
+develop:
+	python setup.py develop
+
 build_egg: clean
 	python setup.py build_py -O2 bdist_egg --exclude-source-files
 
