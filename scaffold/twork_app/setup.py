@@ -35,6 +35,12 @@ import sys
 
 from twork_app.version import __VERSION__
 
+if os.environ.get('PY_HOST_IN_VBOX', ''):
+    """A trick for running in a virtual box, working for `running sdist`
+    """
+    del os.link
+
+
 def _setup():
     kwargs = {}
 
